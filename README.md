@@ -9,6 +9,6 @@ Contains:
 
 
 
-This should be used as an educational resource, I/we do not accept any responcibility for anyone who uses this!
+This should be used as an educational resource, I/we do not accept any responsibility for anyone who uses this!
 
 -- **Evolve, StBoyden**
