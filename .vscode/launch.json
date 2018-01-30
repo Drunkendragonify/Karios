@@ -8,7 +8,7 @@
             "name": "Launch",
             "type": "mono",
             "request": "launch",
-            "program": "${workspaceRoot}//Program.exe",
+            "program": "${workspaceRoot}/Program.exe",
             "cwd": "${workspaceRoot}"
         },
         {
