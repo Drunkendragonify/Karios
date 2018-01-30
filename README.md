@@ -8,12 +8,11 @@ Contains:
 - USB spreader 
 - C&C Checker 
 
-## ToDo:
+## To do:
 - Multithreading
 - Command System for C&C
 - Disguised process (Icon, Smartscreen ect.)
 
+**NOTE**: This should be used as an educational resource, we do not accept any responsibility for anyone who uses this program maliciously if you are caught!
 
-This should be used as an educational resource, we do not accept any responsibility for anyone who uses this!
-
--- **Evolve, StBoyden. DrunkenDragonFly**
+-- **Evolve, STBoyden. DrunkenDragonFly**
