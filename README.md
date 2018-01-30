@@ -5,10 +5,15 @@ Contains:
 - Startup
 - SMTP mail function 
 - Logs keys
+- USB spreader 
+- C&C Checker 
+
+## ToDo:
+- Multithreading
+- Command System for C&C
+- Disguised process (Icon, Smartscreen ect.)
 
 
+This should be used as an educational resource, we do not accept any responsibility for anyone who uses this!
 
-
-This should be used as an educational resource, I/we do not accept any responsibility for anyone who uses this!
-
--- **Evolve, StBoyden**
+-- **Evolve, StBoyden. DrunkenDragonFly**
