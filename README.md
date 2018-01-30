@@ -12,6 +12,8 @@ Contains:
 - Multithreading
 - Command System for C&C
 - Disguised process (Icon, Smartscreen ect.)
+- DDOS Function - 35% done
+- Open website (Has option to be in the background)
 
 **NOTE**: This should be used as an educational resource, we do not accept any responsibility for anyone who uses this program maliciously if you are caught!
 
