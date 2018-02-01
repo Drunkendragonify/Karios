@@ -28,9 +28,6 @@ namespace Karios
         public static void Main()
         {
             var handle = GetConsoleWindow();
-
-
-
             using (WebClient wc = new WebClient())
             {
                 try
