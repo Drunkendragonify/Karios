@@ -1,0 +1,6 @@
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\bin\Debug\UnitTests.exe.config
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\bin\Debug\UnitTests.exe
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\bin\Debug\UnitTests.pdb
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\obj\Debug\UnitTests.csprojResolveAssemblyReference.cache
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\obj\Debug\UnitTests.exe
+c:\users\samuel.brown\documents\visual studio 2015\Projects\UnitTests\UnitTests\obj\Debug\UnitTests.pdb
