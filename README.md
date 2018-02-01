@@ -20,7 +20,7 @@ Contains:
     - Terms of use
     - Permissions
     - License - the project is free and open source so we might as well use a licence that supports FLOSS projects.
-    - Reposibility
+    - Responsibility
     - Etc...
 - Dontations/Patreon (*if* it ever becomes plausible. If not then don't bother)
 
