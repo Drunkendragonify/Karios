@@ -52,7 +52,7 @@ namespace Karios
                         IPTarget = IPTarget.Replace(@"</p>", "");
                         // IPTarget = IP on cutenesss.xyz/SteamerTest.html
                         IPTarget = GlobalTargetIP;
-                    }
+                    }    
                 }
                 catch { }
             }
