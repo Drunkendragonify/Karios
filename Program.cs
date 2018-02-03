@@ -24,7 +24,7 @@ namespace Karios
         private static string LocalIP;
         private static string GlobalTargetIP;
         private static string Website;
-        private static Boolean Online = false;
+        private static bool Online = false;
         
         public static void Main()
         {
