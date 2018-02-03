@@ -23,6 +23,7 @@ Contains:
     - Responsibility
     - Etc...
 - Dontations/Patreon (*if* it ever becomes plausible. If not then don't bother)
+- Option to add in a custom email (reference `line 142` in Program.cs) and save custom email/password to an encrypted file to only be accessed by this program.
 
 **NOTE**: This should be used as an educational resource, we do not accept any responsibility for anyone who uses this program maliciously, and if you are caught!
 
