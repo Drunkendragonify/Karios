@@ -10,10 +10,15 @@ Contains:
 
 ## To do:
 - Multithreading
-- Command System for C&C - 10% done
+- Command System for C&C
+    - PHP Operated (Kill me now)
+    - Register new client
+    - Security hashes (To prevent normal browsers from accsessing our page, and stopping fake clients)
+    - Define targets ect.
 - Disguised process (Icon, Smartscreen ect.)
 - DDOS Function - 25% done
 - Open website (Has option to be in the background)
+- Capture screen
 - **Folder structure**
 - More detailed "to do" list<sup>?</sup>
 - Legal rubbish
