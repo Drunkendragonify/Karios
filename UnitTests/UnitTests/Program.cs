@@ -73,8 +73,8 @@ namespace UnitTests
                     catch (WebException web)
                     {Console.WriteLine(web);}//TODO: Handle this Exception.
 
-                    string comtrim = commands.Trim();
-                    Console.WriteLine(comtrim);
+                    //string comtrim = commands.Trim();
+                    Console.WriteLine(commands);
                     Console.ReadKey();
                     
 
