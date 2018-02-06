@@ -9,4 +9,5 @@
 - Command and Control server
 
 ## Modules to add/modify:
-- No idea
+- Destory all copies of Karios on every client (Reference PreppedCommand[8])
+
