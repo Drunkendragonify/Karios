@@ -8,6 +8,8 @@ Contains:
 - USB spreader 
 - C&C Checker 
 
+For details about modules, click [here](MODULES.md).
+
 ## To do:
 - **Rename the variables to names that make sense** (Only applies to some)
 - Seperate commonly used functions into their own file for better readability

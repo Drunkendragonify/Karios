@@ -1,10 +1,10 @@
 # Modules
 
-### Available modules
+## Available modules:
 - List
 
-### Modules being added/modified
+## Modules being added/modified:
 - List (status)
 
-### Modules to add/modify
+## Modules to add/modify:
 - List
