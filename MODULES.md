@@ -1,10 +1,12 @@
 # Modules
 
 ## Available modules:
-- List
+- Keylogger
+- Capture screen
 
 ## Modules being added/modified:
-- List (status)
+- DDOS
+- Command and Control server
 
 ## Modules to add/modify:
-- List
+- No idea
