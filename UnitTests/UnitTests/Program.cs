@@ -118,8 +118,17 @@ namespace UnitTests
                         /// 7  = Duplication
                         /// 8 = Reverse everything
                         /// </summary>
+                        Console.WriteLine(PreppedCommand[0]);
                         Console.WriteLine(PreppedCommand[1]);
-                        if(PreppedCommand[1] == "Online")
+                        Console.WriteLine(PreppedCommand[2]);
+                        Console.WriteLine(PreppedCommand[3]);
+                        Console.WriteLine(PreppedCommand[4]);
+                        Console.WriteLine(PreppedCommand[5]);
+                        Console.WriteLine(PreppedCommand[6]);
+                        Console.WriteLine(PreppedCommand[7]);
+                        Console.WriteLine(PreppedCommand[8]);
+                        Console.ReadKey();
+                        if (PreppedCommand[1] == "Online")
                         {
                             Console.WriteLine("WORKS!!!!");
                         }
