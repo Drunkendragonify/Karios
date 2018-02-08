@@ -23,6 +23,7 @@ For details about modules, click [here](MODULES.md).
     - Have list of modules to add/complete etc. (This would be nice)
 - Disguised process (Icon, Smartscreen ect.)
 - DDOS Function - 25% done
+- Word/Excel exploit (To load Karios)
 - Open website (Has option to be in the background)
 - Capture screen
 - **Folder structure**
