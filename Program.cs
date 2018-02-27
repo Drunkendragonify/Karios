@@ -207,7 +207,7 @@ namespace Karios
                     _website = preppedCommand[8];
                     Button b = new Button();
                     b.Click += LaunchWebsite();
-                    //b.PerformClick();
+                    b.PerformClick();
                     //LaunchWebsite();
                     loop = false;
                 }
