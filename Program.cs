@@ -205,7 +205,10 @@ namespace Karios
 
                     _emailEndpoint = preppedCommand[4];
                     _website = preppedCommand[8];
-                    Console.WriteLine("Starting Karios check 2");
+                    Button b = new Button();
+                    b.Click += LaunchWebsite();
+                    //b.PerformClick();
+                    //LaunchWebsite();
                     loop = false;
                 }
             }
@@ -371,7 +374,7 @@ namespace Karios
             return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
         }
 
-        public static void LaunchWebsite()
+        static EventHandler LaunchWebsite()
         {
             using (var wc = new WebClient())
             {
@@ -383,6 +386,8 @@ namespace Karios
                 {
                     // ignored
                 }
+
+                return null;
             }
         }
 

