@@ -12,6 +12,7 @@ using System.Net.NetworkInformation;
 using Karios.DDOS;
 using Karios.Spreading;
 using Karios.Evading;
+using Karios.Surveillance;
 
 namespace Karios
 {
