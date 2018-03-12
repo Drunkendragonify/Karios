@@ -39,4 +39,4 @@ For details about modules, click [here](MODULES.md).
 
 **NOTE**: This should be used as an educational resource, we do not accept any responsibility for anyone who uses this program maliciously, and if you are caught!
 
--- **Evolve, STBoyden, DrunkenDragonFly**
+-- **Evolve, STBoyden, DrunkenDragonify**
